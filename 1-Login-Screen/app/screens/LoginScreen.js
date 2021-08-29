@@ -3,8 +3,9 @@ import { View, Text, Image, StyleSheet, Button } from "react-native";
 import { useFonts, Hind_600SemiBold } from "@expo-google-fonts/hind";
 import CustomTextInput from "../components/CustomTextInput";
 import CustomButton from "../components/CustomButton";
+
 export default function LoginScreen() {
-  const [fontLoaded] = useFonts({
+  const [fontLoaded, error] = useFonts({
     Hind_600SemiBold,
   });
 
@@ -46,7 +47,7 @@ export default function LoginScreen() {
             <Image
               resizeMode="contain"
               style={styles.socialLogo}
-              source={require("../assets/facebook-logo-60.png")}
+              source={require("../assets/facebook-logo.png")}
             />
           </View>
           <View style={styles.individualSocialContainer}>

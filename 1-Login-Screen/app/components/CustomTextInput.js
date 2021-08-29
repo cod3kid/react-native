@@ -30,10 +30,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   textInput: {
-    border: "none",
     marginLeft: 10,
     flex: 1,
-    border: "none",
     borderWidth: 0,
     fontSize: 18,
   },
