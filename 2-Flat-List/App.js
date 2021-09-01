@@ -1,12 +1,11 @@
-import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { FlatList, StyleSheet, Text, View, Image } from "react-native";
 
 export default function App() {
   const languages = [
-    { name: "Spanish", imagePath: "./app/assests/spain.jpg" },
-    { name: "French", imagePath: "./app/assests/france.jpg" },
-    { name: "German", imagePath: "./app/assests/germany.jpg" },
+    { name: "Spanish", imagePath: "./app/assets/spain.png" },
+    { name: "French", imagePath: "./app/assets/france.png" },
+    { name: "German", imagePath: "./app/assets/germany.png" },
   ];
 
   return (
@@ -14,10 +13,14 @@ export default function App() {
       <Text>Language Learning App List</Text>
       <FlatList
         data={languages}
-        keyExtractor={languages.name}
+        keyExtractor={(language) => language.name.toString()}
         renderItem={({ item }) => {
           return (
             <View>
+              <Image
+                source={{ uri: item.imagePath }}
+                style={{ width: 50, height: 50 }}
+              />
               <Text>{item.name}</Text>
             </View>
           );
