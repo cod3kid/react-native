@@ -3,25 +3,25 @@ import { FlatList, StyleSheet, Text, View, Image } from "react-native";
 
 export default function App() {
   const languages = [
-    { name: "Spanish", imagePath: "./app/assets/spain.png" },
-    { name: "French", imagePath: "./app/assets/france.png" },
-    { name: "German", imagePath: "./app/assets/germany.png" },
+    { name: "Spanish", imagePath: require("./app/assets/spain.png") },
+    { name: "French", imagePath: require("./app/assets/france.png") },
+    { name: "German", imagePath: require("./app/assets/germany.png") },
   ];
 
   return (
     <View style={styles.container}>
-      <Text>Language Learning App List</Text>
+      <Text>Language Learning App</Text>
       <FlatList
         data={languages}
         keyExtractor={(language) => language.name.toString()}
         renderItem={({ item }) => {
           return (
-            <View>
+            <View style={styles.list}>
               <Image
-                source={{ uri: item.imagePath }}
+                source={item.imagePath}
                 style={{ width: 50, height: 50 }}
               />
-              <Text>{item.name}</Text>
+              <Text style={styles.text}>{item.name}</Text>
             </View>
           );
         }}
@@ -34,7 +34,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+  },
+  list: {
+    flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
+    paddingLeft: 16,
+  },
+  text: {
+    marginLeft: 10,
+    fontSize: 16,
   },
 });
