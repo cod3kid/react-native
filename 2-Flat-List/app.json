@@ -27,6 +27,8 @@
     },
     "web": {
       "favicon": "./app/assets/favicon.png"
+    }, "packagerOpts": {
+      "config": "metro.config.js"
     }
   }
 }
