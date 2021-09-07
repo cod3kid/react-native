@@ -1,22 +1,27 @@
 import React from "react";
 import { View, Text, Image, StyleSheet, Button } from "react-native";
-import { useFonts, Hind_600SemiBold } from "@expo-google-fonts/hind";
 import CustomTextInput from "../components/CustomTextInput";
 import CustomButton from "../components/CustomButton";
+import LoginImage from "../assets/login.svg";
+import GoogleLogo from "../assets/google-logo.svg";
+import FacebookLogo from "../assets/facebook-logo.svg";
+import TwitterLogo from "../assets/twitter-logo.svg";
+import { useFonts } from "expo-font";
+import AppLoading from "expo-app-loading";
 
 export default function LoginScreen() {
-  const [fontLoaded, error] = useFonts({
-    Hind_600SemiBold,
+  let [fontsLoaded] = useFonts({
+    "Urbanist-Medium": require("../assets/fonts/Urbanist-Medium.ttf"),
   });
 
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
+
   return (
-    <View>
-      <Image
-        resizeMode="contain"
-        style={styles.image}
-        source={require("../assets/login.png")}
-      />
+    <View style={styles.container}>
       <View style={styles.secondView}>
+        <LoginImage width={280} height={280} />
         <Text style={styles.loginText}>Login</Text>
         <CustomTextInput
           iconName="email-outline"
@@ -29,7 +34,9 @@ export default function LoginScreen() {
           placeholder="Password"
           isPassword
         />
-        <CustomButton title="Login" style={styles.buttonStyle} />
+        <View>
+          <CustomButton title="Login" style={styles.buttonStyle} />
+        </View>
 
         <View style={styles.orContainer}>
           <Text style={styles.orText}>Or</Text>
@@ -37,25 +44,13 @@ export default function LoginScreen() {
 
         <View style={styles.socialIconsContainer}>
           <View style={styles.individualSocialContainer}>
-            <Image
-              resizeMode="contain"
-              style={styles.socialLogo}
-              source={require("../assets/google-logo.png")}
-            />
+            <GoogleLogo width={50} height={50} />
           </View>
           <View style={styles.individualSocialContainer}>
-            <Image
-              resizeMode="contain"
-              style={styles.socialLogo}
-              source={require("../assets/facebook-logo.png")}
-            />
+            <FacebookLogo width={50} height={50} />
           </View>
           <View style={styles.individualSocialContainer}>
-            <Image
-              resizeMode="contain"
-              style={styles.socialLogo}
-              source={require("../assets/apple-logo.png")}
-            />
+            <TwitterLogo width={50} height={50} />
           </View>
         </View>
       </View>
@@ -68,15 +63,16 @@ export default function LoginScreen() {
   );
 }
 const styles = StyleSheet.create({
-  image: {
-    width: "100%",
-    height: 300,
+  container: {
+    alignItems: "center",
+    paddingTop: 16,
+    justifyContent: "space-between",
   },
   secondView: {
     paddingHorizontal: 30,
   },
   loginText: {
-    fontFamily: "Hind_600SemiBold",
+    fontFamily: "Urbanist-Medium",
     fontSize: 40,
     color: "#192A4D",
   },
@@ -92,12 +88,8 @@ const styles = StyleSheet.create({
   socialIconsContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    flexGrow: 1,
   },
   individualSocialContainer: {
-    borderColor: "#B7C6D9",
-    borderWidth: 1,
-    paddingVertical: 10,
     paddingHorizontal: 25,
     borderRadius: 12,
   },
@@ -109,11 +101,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    top: 100,
+    top: 60,
   },
   registerButton: {
     color: "#275BA2",
     fontSize: 16,
-    fontFamily: "Hind_600SemiBold",
+    fontFamily: "Urbanist-Medium",
   },
 });

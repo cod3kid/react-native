@@ -1,11 +1,16 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { useFonts, Hind_600SemiBold } from "@expo-google-fonts/hind";
+import { useFonts } from "expo-font";
+import AppLoading from "expo-app-loading";
 
 export default function CustomButton() {
-  const [fontLoaded] = useFonts({
-    Hind_600SemiBold,
+  let [fontsLoaded] = useFonts({
+    "Urbanist-Medium": require("../assets/fonts/Urbanist-Medium.ttf"),
   });
+
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
 
   return (
     <View style={styles.parent}>
@@ -23,10 +28,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 20,
+    padding: 12,
   },
   textStyle: {
     color: "#9FCCFD",
-    fontFamily: "Hind_600SemiBold",
+    fontFamily: "Urbanist-Medium",
     fontSize: 18,
   },
 });
