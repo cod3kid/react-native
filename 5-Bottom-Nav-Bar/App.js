@@ -6,6 +6,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Home from "./Screens/Home";
 import Settings from "./Screens/Settings";
 import Profile from "./Screens/Profile";
+import HomeButton from "./Components/HomeButton";
 
 export default function App() {
   const Tab = createBottomTabNavigator();
@@ -17,26 +18,33 @@ export default function App() {
           name="Settings"
           component={Settings}
           options={{
-            tabBarIcon: () => (
-              <MaterialCommunityIcons name="wrench" size={24} color="black" />
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons name="wrench" size={size} color={color} />
             ),
           }}
         />
         <Tab.Screen
           name="Home"
           component={Home}
-          options={{
-            tabBarIcon: () => (
-              <MaterialCommunityIcons name="home" size={24} color="black" />
+          options={({ navigation }) => ({
+            tabBarButton: () => (
+              <HomeButton onPress={() => navigation.navigate("Home")} />
             ),
-          }}
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons name="home" size={size} color={color} />
+            ),
+          })}
         />
         <Tab.Screen
           name="Profile"
           component={Profile}
           options={{
-            tabBarIcon: () => (
-              <MaterialCommunityIcons name="account" size={24} color="black" />
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons
+                name="account"
+                size={size}
+                color={color}
+              />
             ),
           }}
         />
