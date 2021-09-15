@@ -7,20 +7,29 @@ import {
   Modal,
   TouchableWithoutFeedback,
   TextInput,
+  Button,
 } from "react-native";
 import FAB from "./Components/FAB";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 export default function App() {
   const [isModalVisible, setisModalVisible] = useState(false);
-  const addItem = () => {
+  const [addText, setAddText] = useState("");
+  const [taskList, setTaskList] = useState([]);
+  const openModal = () => {
     setisModalVisible(true);
+  };
+
+  const addItem = () => {
+    setTaskList(...taskList, addText);
+    setAddText("");
+    setisModalVisible(false);
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.fabContainer}>
-        <FAB style={styles.fab} onPress={addItem} />
+        <FAB style={styles.fab} onPress={openModal} />
       </View>
       <Modal visible={isModalVisible} animationType="slide" transparent>
         <View style={styles.modal}>
@@ -31,7 +40,14 @@ export default function App() {
             </TouchableWithoutFeedback>
           </View>
           <View>
-            <TextInput />
+            <TextInput
+              onChangeText={(text) => setAddText(text)}
+              placeholder="Task"
+              placeholderTextColor="#ADB3BC"
+            />
+          </View>
+          <View>
+            <Button title="Add" onPress={addItem} />
           </View>
         </View>
       </Modal>
