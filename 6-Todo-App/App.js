@@ -8,6 +8,8 @@ import {
   TouchableWithoutFeedback,
   TextInput,
   Button,
+  FlatList,
+  SafeAreaView,
 } from "react-native";
 import FAB from "./Components/FAB";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -21,13 +23,25 @@ export default function App() {
   };
 
   const addItem = () => {
-    setTaskList(...taskList, addText);
+    setTaskList([...taskList, { desc: addText }]);
     setAddText("");
     setisModalVisible(false);
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      <FlatList
+        data={taskList}
+        keyExtractor={(task) => task.desc.toString()}
+        // ItemSeparatorComponent={() => <View style={styles.separator} />}
+        renderItem={({ item }) => {
+          return (
+            <View style={{ flexDirection: "row" }}>
+              <Text style={styles.text}>{item.desc}</Text>
+            </View>
+          );
+        }}
+      />
       <View style={styles.fabContainer}>
         <FAB style={styles.fab} onPress={openModal} />
       </View>
@@ -51,7 +65,7 @@ export default function App() {
           </View>
         </View>
       </Modal>
-    </View>
+    </SafeAreaView>
   );
 }
 
