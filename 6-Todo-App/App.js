@@ -10,6 +10,7 @@ import {
   Button,
   FlatList,
   SafeAreaView,
+  StatusBar,
 } from "react-native";
 import FAB from "./Components/FAB";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -30,14 +31,29 @@ export default function App() {
 
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar
+        barStyle="light-content"
+        backgroundColor="#6ACD08"
+        translucent={false}
+      />
+      <View style={styles.appBar}>
+        <Text style={styles.headerText}>Todo App</Text>
+      </View>
       <FlatList
         data={taskList}
         keyExtractor={(task) => task.desc.toString()}
         // ItemSeparatorComponent={() => <View style={styles.separator} />}
         renderItem={({ item }) => {
           return (
-            <View style={{ flexDirection: "row" }}>
-              <Text style={styles.text}>{item.desc}</Text>
+            <View
+              style={{
+                flexDirection: "row",
+                paddingVertical: 5,
+                paddingLeft: 50,
+                justifyContent: "flex-start",
+              }}
+            >
+              <Text style={styles.listText}>{item.desc}</Text>
             </View>
           );
         }}
@@ -73,7 +89,20 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+  },
+  appBar: {
+    height: 60,
+    backgroundColor: "#6ACD08",
+    justifyContent: "center",
+    marginBottom: 8,
+    flexDirection: "row",
+    justifyContent: "flex-start",
     alignItems: "center",
+    paddingHorizontal: 16,
+  },
+  listText: {
+    fontWeight: "bold",
+    fontSize: 16,
   },
   modal: {
     backgroundColor: "gray",
