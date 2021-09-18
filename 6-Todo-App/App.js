@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -14,19 +14,26 @@ import {
 } from "react-native";
 import FAB from "./Components/FAB";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import CheckBox from "@react-native-community/checkbox";
 
 export default function App() {
   const [isModalVisible, setisModalVisible] = useState(false);
   const [addText, setAddText] = useState("");
   const [taskList, setTaskList] = useState([]);
+
   const openModal = () => {
     setisModalVisible(true);
   };
 
   const addItem = () => {
-    setTaskList([...taskList, { desc: addText }]);
+    setTaskList([...taskList, { desc: addText, done: false }]);
     setAddText("");
     setisModalVisible(false);
+  };
+
+  const changeTaskStatus = (newValue, index) => {
+    const newCheckboxes = checkboxes;
+    newCheckboxes[index].done = newValue;
   };
 
   return (
@@ -43,7 +50,7 @@ export default function App() {
         data={taskList}
         keyExtractor={(task) => task.desc.toString()}
         // ItemSeparatorComponent={() => <View style={styles.separator} />}
-        renderItem={({ item }) => {
+        renderItem={({ item, index }) => {
           return (
             <View
               style={{
@@ -53,6 +60,14 @@ export default function App() {
                 justifyContent: "flex-start",
               }}
             >
+              <CheckBox
+                disabled={false}
+                value={item.todo}
+                onValueChange={(newValue) => {
+                  console.log("clicked");
+                  changeTaskStatus(newValue, index);
+                }}
+              />
               <Text style={styles.listText}>{item.desc}</Text>
             </View>
           );
