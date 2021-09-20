@@ -14,13 +14,13 @@ import {
 } from "react-native";
 import FAB from "./Components/FAB";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import CheckBox from "@react-native-community/checkbox";
+import ToDoItem from "./Components/ToDoItem";
 
 export default function App() {
   const [isModalVisible, setisModalVisible] = useState(false);
   const [addText, setAddText] = useState("");
   const [taskList, setTaskList] = useState([]);
-
+  const [checked, setChecked] = useState(false);
   const openModal = () => {
     setisModalVisible(true);
   };
@@ -32,8 +32,10 @@ export default function App() {
   };
 
   const changeTaskStatus = (newValue, index) => {
-    const newCheckboxes = checkboxes;
-    newCheckboxes[index].done = newValue;
+    const newTaskList = [...taskList];
+    newTaskList[index].done = newValue;
+    console.log(newTaskList);
+    setTaskList(newTaskList);
   };
 
   return (
@@ -52,24 +54,12 @@ export default function App() {
         // ItemSeparatorComponent={() => <View style={styles.separator} />}
         renderItem={({ item, index }) => {
           return (
-            <View
-              style={{
-                flexDirection: "row",
-                paddingVertical: 5,
-                paddingLeft: 50,
-                justifyContent: "flex-start",
-              }}
-            >
-              <CheckBox
-                disabled={false}
-                value={item.todo}
-                onValueChange={(newValue) => {
-                  console.log("clicked");
-                  changeTaskStatus(newValue, index);
-                }}
-              />
-              <Text style={styles.listText}>{item.desc}</Text>
-            </View>
+            <ToDoItem
+              desc={item.desc}
+              todo={item.todo}
+              changeTaskStatus={changeTaskStatus}
+              index={index}
+            />
           );
         }}
       />
