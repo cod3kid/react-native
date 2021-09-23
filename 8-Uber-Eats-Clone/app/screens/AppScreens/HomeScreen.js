@@ -8,13 +8,12 @@ import {
   SafeAreaView,
   ScrollView,
 } from "react-native";
-import BottomTabs from "../components/BottomTabs";
-import Categories from "../components/Categories";
-import HeaderTabs from "../components/HeaderTabs";
-import RestaurantItems from "../components/RestaurantItems";
-import SearchBar from "../components/SearchBar";
+import Categories from "../../components/Categories";
+import HeaderTabs from "../../components/HeaderTabs";
+import RestaurantItems from "../../components/RestaurantItems";
+import SearchBar from "../../components/SearchBar";
 
-export default function Home() {
+export default function HomeScreen() {
   return (
     <SafeAreaView style={[styles.androidSafeArea, styles.safeAreaStyle]}>
       <View style={styles.headerTabsContainer}>
@@ -25,7 +24,7 @@ export default function Home() {
         <Categories />
         <RestaurantItems />
       </ScrollView>
-      <BottomTabs />
+      {/* <BottomTabs /> */}
     </SafeAreaView>
   );
 }
