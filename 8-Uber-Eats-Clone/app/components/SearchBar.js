@@ -1,29 +1,53 @@
 import React from "react";
 import { View, Text } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { useDispatch } from "react-redux";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import AntDesign from "react-native-vector-icons/AntDesign";
 
-export default function SearchBar({ cityHandler }) {
+export default function SearchBar() {
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+
   return (
-    <View style={{ marginTop: 15, flexDirection: "row" }}>
+    <View
+      style={{
+        margin: 15,
+        flexDirection: "row",
+        position: "absolute",
+        top: 20,
+        zIndex: 100,
+      }}
+    >
       <GooglePlacesAutocomplete
-        // query={{ key: "AIzaSyATiAqIXBARofRD2apZcPQ1eEWZPH4fPV4" }}
+        query={{ key: "AIzaSyDoHciDQ0huvuCejI1Js4dwbA3IxeRcbrE" }}
         onPress={(data, details = null) => {
-          console.log(data.description);
-          const city = data.description.split(",")[0];
-          cityHandler(city);
+          console.log(data);
+
+          // setCity({
+          //   name: data.description.split(",")[0],
+          //   location: data.place_id,
+          // });
+          dispatch({
+            type: "CHANGE_CITY_DATA",
+            payload: {
+              name: data.description.split(",")[0],
+              location: data.place_id,
+            },
+          });
+          navigation.navigate("Home");
         }}
         placeholder="Search"
         styles={{
           textInput: {
-            backgroundColor: "#eee",
+            backgroundColor: "#fff",
             borderRadius: 20,
             fontWeight: "700",
             marginTop: 7,
           },
           textInputContainer: {
-            backgroundColor: "#eee",
+            backgroundColor: "#fff",
             borderRadius: 50,
             flexDirection: "row",
             alignItems: "center",
