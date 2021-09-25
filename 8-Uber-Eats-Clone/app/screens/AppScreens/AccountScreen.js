@@ -8,10 +8,12 @@ import {
   StatusBar,
   SafeAreaView,
 } from "react-native";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+
 import AuthContext from "../../auth/context";
 import authStorage from "../../auth/storage";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import AccountsListItem from "../../components/AccountsListItem";
+import Screen from "../../components/Common/Screen";
+import AccountsListItem from "../../components/Account/AccountsListItem";
 
 export default function AccountScreen() {
   const { setUser } = useContext(AuthContext);
@@ -22,7 +24,7 @@ export default function AccountScreen() {
       icon: "shield",
     },
     {
-      name: "Your favourites",
+      name: "Your Favourites",
       icon: "heart",
     },
     {
@@ -34,12 +36,28 @@ export default function AccountScreen() {
       icon: "credit-card",
     },
     {
-      name: "Business preferences",
+      name: "Send a Gift",
+      icon: "gift",
+    },
+    {
+      name: "Business Preferences",
       icon: "bag-checked",
     },
     {
       name: "Help",
       icon: "lifebuoy",
+    },
+    {
+      name: "Promotions",
+      icon: "tag-text",
+    },
+    {
+      name: "Eat Pass",
+      icon: "ticket-confirmation",
+    },
+    {
+      name: "Deliver with Uber",
+      icon: "basket",
     },
     {
       name: "Logout",
@@ -51,40 +69,45 @@ export default function AccountScreen() {
     },
   ];
   return (
-    <SafeAreaView style={styles.androidSafeArea}>
-      <View style={{ flexDirection: "row", padding: 16 }}>
-        <MaterialCommunityIcons name="account-circle" size={40} color="grey" />
-        <View style={{ justifyContent: "center", marginLeft: 10 }}>
-          <Text style={{ fontWeight: "600" }}>Muhamed Sufail</Text>
-          <Text style={{ color: "#06c167" }}>View Account</Text>
+    <Screen>
+      <View style={{ backgroundColor: "white", flex: 1 }}>
+        <View
+          style={{
+            flexDirection: "row",
+            padding: 16,
+          }}
+        >
+          <MaterialCommunityIcons
+            name="account-circle"
+            size={40}
+            color="grey"
+          />
+          <View style={{ justifyContent: "center", marginLeft: 10 }}>
+            <Text style={{ fontWeight: "600" }}>Muhamed Sufail</Text>
+          </View>
         </View>
+        <FlatList
+          data={settingsList}
+          keyExtractor={(item) => item.name.toString()}
+          ItemSeparatorComponent={() => <View style={styles.separator} />}
+          renderItem={({ item }) => {
+            return (
+              <AccountsListItem
+                name={item.name}
+                icon={item.icon}
+                onPress={item.onPress}
+              />
+            );
+          }}
+        />
       </View>
-      <FlatList
-        data={settingsList}
-        keyExtractor={(item) => item.name.toString()}
-        ItemSeparatorComponent={() => <View style={styles.separator} />}
-        renderItem={({ item }) => {
-          return (
-            <AccountsListItem
-              name={item.name}
-              icon={item.icon}
-              onPress={item.onPress}
-            />
-          );
-        }}
-      />
-    </SafeAreaView>
+    </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  androidSafeArea: {
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-  },
   separator: {
-    height: 1,
     marginVertical: 10,
     marginLeft: 60,
-    backgroundColor: "#B7C6D9",
   },
 });

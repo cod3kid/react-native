@@ -7,8 +7,8 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import firebase from "../../../firebase";
-import InputTextField from "../../components/InputTextField";
-import CustomButton from "../../components/CustomButton";
+import InputTextField from "../../components/Auth/InputTextField";
+import CustomButton from "../../components/Auth/CustomButton";
 import UberEatsLogo from "../../assets/uber-eats-flat-cropped.svg";
 
 // const validationSchema = Yup.object().shape({

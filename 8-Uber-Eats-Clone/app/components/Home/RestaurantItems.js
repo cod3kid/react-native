@@ -7,20 +7,21 @@ export default function RestaurantItems({ navigation, restaurants, ...props }) {
     <>
       {restaurants.map((restaurant, index) => {
         const { name, image_url } = restaurant;
+        console.log(image_url)
         return (
           <TouchableOpacity
             key={index}
             activeOpacity={1}
-            // onPress={() =>
-            //   navigation.navigate("RestaurantDetail", {
-            //     name: restaurant.name,
-            //     image: restaurant.image_url,
-            //     price: restaurant.price,
-            //     reviews: restaurant.review_count,
-            //     rating: restaurant.rating,
-            //     categories: restaurant.categories,
-            //   })
-            // }
+            onPress={() =>
+              navigation.navigate("Restaurant", {
+                name: restaurant.name,
+                image: restaurant.image_url,
+                price: restaurant.price,
+                reviews: restaurant.review_count,
+                rating: restaurant.rating,
+                categories: restaurant.categories,
+              })
+            }
           >
             <View style={styles.restaurantContainer}>
               <RestaurantImage image={image_url} />

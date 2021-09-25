@@ -23,12 +23,6 @@ export default function SearchBar() {
       <GooglePlacesAutocomplete
         query={{ key: "AIzaSyDoHciDQ0huvuCejI1Js4dwbA3IxeRcbrE" }}
         onPress={(data, details = null) => {
-          console.log(data);
-
-          // setCity({
-          //   name: data.description.split(",")[0],
-          //   location: data.place_id,
-          // });
           dispatch({
             type: "CHANGE_CITY_DATA",
             payload: {

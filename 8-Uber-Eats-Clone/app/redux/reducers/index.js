@@ -1,8 +1,12 @@
 import { combineReducers } from "redux";
+import cartReducer from "./cartReducer";
 import cityReducer from "./cityReducer";
+import navReducer from "./navReducer";
 
 let reducers = combineReducers({
-  cityReducer: cityReducer,
+  cityReducer,
+  cartReducer,
+  navReducer,
 });
 
 const rootReducer = (state, action) => {

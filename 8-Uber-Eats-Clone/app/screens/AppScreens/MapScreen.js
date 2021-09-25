@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import MapView, { Marker } from "react-native-maps";
 import { View, Text, Dimensions } from "react-native";
 
-import SearchBar from "../../components/SearchBar";
+import SearchBar from "../../components/Home/SearchBar";
 
 const screenHeight = Dimensions.get("window").height;
 

@@ -11,7 +11,8 @@ import {
   Dimensions,
   TouchableOpacity,
 } from "react-native";
-import BrowseSearchBar from "../../components/BrowseSearchBar";
+
+import BrowseSearchBar from "../../components/Browse/BrowseSearchBar";
 
 const screenWidth = Dimensions.get("window").width;
 

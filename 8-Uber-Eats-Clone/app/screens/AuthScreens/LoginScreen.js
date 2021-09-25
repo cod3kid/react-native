@@ -1,10 +1,11 @@
 import React, { useState, useContext } from "react";
 import { StyleSheet, Text, View, TouchableWithoutFeedback } from "react-native";
 import firebase from "../../../firebase";
-import InputTextField from "../../components/InputTextField";
-import CustomButton from "../../components/CustomButton";
+import InputTextField from "../../components/Auth/InputTextField";
+import CustomButton from "../../components/Auth/CustomButton";
 import UberEatsLogo from "../../assets/uber-eats-flat-cropped.svg";
 import AuthContext from "../../auth/context";
+import authStorage from "../../auth/storage";
 
 // const validationSchema = Yup.object().shape({
 //   email: Yup.string().required().email().label("Email"),
@@ -21,9 +22,10 @@ function LoginScreen({ navigation }) {
     if (email !== "" && password !== "") {
       await auth
         .signInWithEmailAndPassword(email, password)
-        .then((res) => {
+        .then(async (res) => {
           console.log(res);
-          setUser(res.user.displayName);
+          setUser(res.user.uid);
+          await authStorage.storeUserData(res.uid);
         })
         .catch((error) => {
           // setLoginError(error.message);
@@ -35,11 +37,6 @@ function LoginScreen({ navigation }) {
   return (
     <View style={{ paddingVertical: 50, padding: 20 }}>
       <UberEatsLogo height={100} width={200} style={{ alignSelf: "center" }} />
-      {/* <View>
-        <Text style={{ fontSize: 24, fontWeight: "400", marginBottom: 10 }}>
-          Welcome Back
-        </Text>
-      </View> */}
       <View>
         <InputTextField
           iconColor="#818B95"

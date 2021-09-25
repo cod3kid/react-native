@@ -7,8 +7,8 @@ import configureStore from "../redux/store";
 import HomeNavigator from "./HomeNavigator";
 import BrowseScreen from "../screens/AppScreens/BrowseScreen";
 import OrdersScreen from "../screens/AppScreens/OrdersScreen";
-import AccountScreen from "../screens/AppScreens/AccountScreen";
 import PassScreen from "../screens/AppScreens/PassScreen";
+import AccountScreen from "../screens/AppScreens/AccountScreen";
 
 const Tab = createBottomTabNavigator();
 const store = configureStore();
@@ -18,16 +18,17 @@ const AppNavigator = () => (
     <Tab.Navigator
       screenOptions={{
         tabBarActiveTintColor: "black",
+        headerShown: false,
       }}
     >
       <Tab.Screen
         name="HomeNav"
         component={HomeNavigator}
         options={{
+          title: "Home",
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="home" color={color} size={size} />
           ),
-          headerShown: false,
         }}
       />
       <Tab.Screen
@@ -41,7 +42,6 @@ const AppNavigator = () => (
               size={size}
             />
           ),
-          headerShown: false,
         }}
       />
       <Tab.Screen
@@ -55,17 +55,16 @@ const AppNavigator = () => (
               size={size}
             />
           ),
-          headerShown: false,
         }}
       />
       <Tab.Screen
         name="Account"
         component={AccountScreen}
         options={{
+          title: "Account",
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="account" color={color} size={size} />
           ),
-          headerShown: false,
         }}
       />
       <Tab.Screen
@@ -79,7 +78,6 @@ const AppNavigator = () => (
               size={size}
             />
           ),
-          headerShown: false,
         }}
       />
     </Tab.Navigator>

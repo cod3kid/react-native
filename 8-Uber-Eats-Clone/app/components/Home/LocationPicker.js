@@ -16,10 +16,10 @@ export default function LocationPicker({ navigateToMaps }) {
     >
       <TouchableOpacity
         onPress={() => navigateToMaps()}
-        style={{ flexDirection: "row" }}
+        style={{ flexDirection: "row", alignItems: "center" }}
       >
-        <Text>Now · </Text>
-        <Text>{city.name}</Text>
+        <Text>Now • </Text>
+        <Text style={{ fontSize: 16 }}>{city.name}</Text>
       </TouchableOpacity>
 
       <MaterialCommunityIcons name="chevron-down" size={24} color="black" />
