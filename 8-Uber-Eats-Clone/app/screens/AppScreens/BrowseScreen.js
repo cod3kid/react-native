@@ -13,6 +13,7 @@ import {
 } from "react-native";
 
 import BrowseSearchBar from "../../components/Browse/BrowseSearchBar";
+import { categories } from "../../utils";
 
 const screenWidth = Dimensions.get("window").width;
 

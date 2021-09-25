@@ -1,13 +1,5 @@
 import React, { useContext } from "react";
-import {
-  View,
-  Text,
-  FlatList,
-  StyleSheet,
-  Platform,
-  StatusBar,
-  SafeAreaView,
-} from "react-native";
+import { View, Text, FlatList, StyleSheet } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import Screen from "../../components/Common/Screen";
@@ -40,7 +32,7 @@ export default function AccountScreen() {
             color="grey"
           />
           <View style={styles.userNameContainer}>
-            <Text style={styles.userText}>{fullname}</Text>
+            <Text style={styles.userText}>User</Text>
           </View>
         </View>
         <FlatList

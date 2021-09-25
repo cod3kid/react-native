@@ -25,6 +25,7 @@ function LoginScreen({ navigation }) {
         .then(async (res) => {
           console.log(res);
           setUser(res.user.uid);
+          await authStorage.storeUserName(res.user.displayName);
           await authStorage.storeUserData(res.uid);
         })
         .catch((error) => {

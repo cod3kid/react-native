@@ -69,49 +69,6 @@ export const categoryItems = [
   },
 ];
 
-export const settingsList = [
-  {
-    name: "COVID-19 Safety Centre",
-    icon: "shield",
-  },
-  {
-    name: "Your Favourites",
-    icon: "heart",
-  },
-  {
-    name: "Restaurant Rewards",
-    icon: "star-circle",
-  },
-  {
-    name: "Wallet",
-    icon: "credit-card",
-  },
-  {
-    name: "Send a Gift",
-    icon: "gift",
-  },
-  {
-    name: "Business Preferences",
-    icon: "bag-checked",
-  },
-  {
-    name: "Help",
-    icon: "lifebuoy",
-  },
-  {
-    name: "Promotions",
-    icon: "tag-text",
-  },
-  {
-    name: "Eat Pass",
-    icon: "ticket-confirmation",
-  },
-  {
-    name: "Deliver with Uber",
-    icon: "basket",
-  },
-];
-
 export const categories = [
   {
     name: "Fast Food",
