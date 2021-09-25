@@ -26,7 +26,7 @@ export default function HomeScreen({ navigation }) {
   const [isLoading, setIsLoading] = useState(false);
 
   const navigateToMaps = () => {
-    navigation.navigate("Map");
+    navigation.navigate("Search");
   };
 
   const getRestaurants = () => {
@@ -58,7 +58,7 @@ export default function HomeScreen({ navigation }) {
 
   useEffect(() => {
     getRestaurants();
-  }, [cityState]);
+  }, [cityState, activeTab]);
 
   return (
     <SafeAreaView style={[styles.androidSafeArea, styles.safeAreaStyle]}>
@@ -66,11 +66,10 @@ export default function HomeScreen({ navigation }) {
         <HeaderTabs activeTab={activeTab} setActiveTab={setActiveTab} />
         <LocationPicker navigateToMaps={navigateToMaps} />
       </View>
-
       <ScrollView showsVerticalScrollIndicator={false}>
         <Categories />
         {isLoading ? (
-          <View style={{ marginTop: "50%" }}>
+          <View style={styles.activityContainer}>
             <ActivityIndicator size="large" color="black" />
           </View>
         ) : (
@@ -95,5 +94,8 @@ const styles = StyleSheet.create({
   headerTabsContainer: {
     backgroundColor: "white",
     padding: 15,
+  },
+  activityContainer: {
+    marginTop: "50%",
   },
 });

@@ -94,7 +94,15 @@ export default function ViewCart({ navigation }) {
                 ${totalUSD}
               </Text>
             </View>
-            <View style={{ flexDirection: "row", justifyContent: "center" }}>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                position: "absolute",
+                bottom: 20,
+                alignSelf: "center",
+              }}
+            >
               <TouchableOpacity
                 style={{
                   marginTop: 20,
@@ -102,8 +110,7 @@ export default function ViewCart({ navigation }) {
                   alignItems: "center",
                   padding: 13,
                   borderRadius: 30,
-                  width: 300,
-                  position: "relative",
+                  width: "90%",
                 }}
                 onPress={() => {
                   // addOrderToFireBase();

@@ -18,6 +18,22 @@ const getUserData = async () => {
   }
 };
 
+const storeUserName = async (name) => {
+  try {
+    await SecureStore.setItemAsync("name", name);
+  } catch (error) {
+    console.log("Error storing the user data", error);
+  }
+};
+
+const getUserName = async () => {
+  try {
+    return await SecureStore.getItemAsync("name");
+  } catch (error) {
+    console.log("Error getting the user data", error);
+  }
+};
+
 const removeUserData = async () => {
   try {
     await SecureStore.deleteItemAsync(key);
@@ -26,4 +42,10 @@ const removeUserData = async () => {
   }
 };
 
-export default { getUserData, storeUserData, removeUserData };
+export default {
+  getUserData,
+  storeUserData,
+  removeUserData,
+  getUserName,
+  storeUserName,
+};

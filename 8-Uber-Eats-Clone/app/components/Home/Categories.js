@@ -7,10 +7,10 @@ export default function Categories() {
   return (
     <View
       style={{
-        marginTop: 5,
         backgroundColor: "#fff",
         paddingVertical: 10,
         paddingLeft: 20,
+        marginBottom: 5,
       }}
     >
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -39,7 +39,6 @@ const styles = StyleSheet.create({
   },
   textStyle: {
     fontSize: 13,
-    //900 doesn't work on android, idk
-    fontWeight: "900",
+    fontWeight: "700",
   },
 });

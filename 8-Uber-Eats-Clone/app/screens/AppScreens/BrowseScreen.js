@@ -17,41 +17,6 @@ import BrowseSearchBar from "../../components/Browse/BrowseSearchBar";
 const screenWidth = Dimensions.get("window").width;
 
 export default function BrowseScreen() {
-  const categories = [
-    {
-      name: "Fast Food",
-      source: require("../../assets/fast-food.jpg"),
-    },
-    {
-      name: "Pizza",
-      source: require("../../assets/pizza.jpg"),
-    },
-    {
-      name: "Indian",
-      source: require("../../assets/indian.jpg"),
-    },
-    {
-      name: "Desserts",
-      source: require("../../assets/desserts.jpg"),
-    },
-    {
-      name: "Mexican",
-      source: require("../../assets/mexican.jpg"),
-    },
-    {
-      name: "Ramen",
-      source: require("../../assets/ramen.jpg"),
-    },
-    {
-      name: "Italian",
-      source: require("../../assets/italian.jpg"),
-    },
-
-    {
-      name: "Chinese",
-      source: require("../../assets/chinese.jpeg"),
-    },
-  ];
   return (
     <SafeAreaView style={[styles.androidSafeArea, styles.parent]}>
       <ScrollView>

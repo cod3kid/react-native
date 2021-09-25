@@ -69,19 +69,109 @@ export const categoryItems = [
   },
 ];
 
-export const fetchPublishableKey = async () => {
-  try {
-    const response = await fetch(`${STRIPE_API_URL}/stripe-key`);
+export const settingsList = [
+  {
+    name: "COVID-19 Safety Centre",
+    icon: "shield",
+  },
+  {
+    name: "Your Favourites",
+    icon: "heart",
+  },
+  {
+    name: "Restaurant Rewards",
+    icon: "star-circle",
+  },
+  {
+    name: "Wallet",
+    icon: "credit-card",
+  },
+  {
+    name: "Send a Gift",
+    icon: "gift",
+  },
+  {
+    name: "Business Preferences",
+    icon: "bag-checked",
+  },
+  {
+    name: "Help",
+    icon: "lifebuoy",
+  },
+  {
+    name: "Promotions",
+    icon: "tag-text",
+  },
+  {
+    name: "Eat Pass",
+    icon: "ticket-confirmation",
+  },
+  {
+    name: "Deliver with Uber",
+    icon: "basket",
+  },
+];
 
-    const { publishableKey } = await response.json();
+export const categories = [
+  {
+    name: "Fast Food",
+    source: require("../assets/images/fast-food.jpg"),
+  },
+  {
+    name: "Pizza",
+    source: require("../assets/images/pizza.jpg"),
+  },
+  {
+    name: "Indian",
+    source: require("../assets/images/indian.jpg"),
+  },
+  {
+    name: "Desserts",
+    source: require("../assets/images/desserts.jpg"),
+  },
+  {
+    name: "Mexican",
+    source: require("../assets/images/mexican.jpg"),
+  },
+  {
+    name: "Ramen",
+    source: require("../assets/images/ramen.jpg"),
+  },
+  {
+    name: "Italian",
+    source: require("../assets/images/italian.jpg"),
+  },
 
-    return publishableKey;
-  } catch (e) {
-    console.warn("Unable to fetch publishable key. Is your server running?");
-    Alert.alert(
-      "Error",
-      "Unable to fetch publishable key. Is your server running?"
-    );
-    return null;
-  }
-};
+  {
+    name: "Chinese",
+    source: require("../assets/images/chinese.jpeg"),
+  },
+];
+
+export const passList = [
+  {
+    title: "$0 Delivery Fee on Uber Eats",
+    desc: "Available at most restaurants in your area. Service fee applies. $20 min order\n(excluding fees).",
+    image: require("../assets/images/delivery-free.png"),
+  },
+  {
+    title: "Save on every ride",
+    desc: "Exclusive member savings with at least\n10% off every trip (excluing UberPool).",
+    image: require("../assets/images/car.png"),
+  },
+  {
+    title: "$0 Delivery Fee on Grocery & \nConvenience",
+    desc: "Available at most stores in your area.\nService fee applies. $20 min order\n(excluding fees).",
+    image: require("../assets/images/grocery.png"),
+  },
+  {
+    title: "Send packages for less",
+    desc: "Get a 10% discount to send packages on demand.",
+    image: require("../assets/images/gift.png"),
+  },
+  {
+    title: "Exclusive member perks",
+    desc: "Get special deals from restaurants and\nstores plus offers from other exclusive\nUber partners",
+    image: require("../assets/images/exclusive.png"),
+  },
+];

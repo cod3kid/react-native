@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TouchableWithoutFeedback } from "react-native";
 import firebase from "../../../firebase";
 import InputTextField from "../../components/Auth/InputTextField";
 import CustomButton from "../../components/Auth/CustomButton";
-import UberEatsLogo from "../../assets/uber-eats-flat-cropped.svg";
+import UberEatsLogo from "../../assets/images/uber-eats-flat-cropped.svg";
 import AuthContext from "../../auth/context";
 import authStorage from "../../auth/storage";
 

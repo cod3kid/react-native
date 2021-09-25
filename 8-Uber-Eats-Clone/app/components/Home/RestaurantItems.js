@@ -6,20 +6,36 @@ export default function RestaurantItems({ navigation, restaurants, ...props }) {
   return (
     <>
       {restaurants.map((restaurant, index) => {
-        const { name, image_url } = restaurant;
-        console.log(image_url)
+        const {
+          name,
+          image_url,
+          price,
+          rating,
+          review_count,
+          categories,
+          coordinates,
+          location,
+          phone,
+          url,
+          display_phone,
+        } = restaurant;
         return (
           <TouchableOpacity
             key={index}
             activeOpacity={1}
             onPress={() =>
               navigation.navigate("Restaurant", {
-                name: restaurant.name,
-                image: restaurant.image_url,
-                price: restaurant.price,
-                reviews: restaurant.review_count,
-                rating: restaurant.rating,
-                categories: restaurant.categories,
+                name,
+                image: image_url,
+                price,
+                reviews: review_count,
+                rating,
+                categories,
+                coordinates,
+                location,
+                phone,
+                url,
+                displayPhone: display_phone,
               })
             }
           >
@@ -72,7 +88,6 @@ const RestaurantInfo = ({ name, rating }) => (
 
 const styles = StyleSheet.create({
   restaurantContainer: {
-    marginTop: 10,
     padding: 15,
     backgroundColor: "white",
   },

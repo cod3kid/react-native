@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import {
   View,
   Text,
-  SafeAreaView,
   StyleSheet,
   Platform,
   StatusBar,
@@ -16,6 +15,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import firebase from "../../../firebase";
 import AuthContext from "../../auth/context";
+import Screen from "../../components/Common/Screen";
 
 export default function OrdersScreen() {
   const { user } = useContext(AuthContext);
@@ -50,39 +50,26 @@ export default function OrdersScreen() {
   }, []);
 
   return (
-    <SafeAreaView style={[styles.androidSafeArea, styles.parent]}>
-      <View style={{ padding: 18, backgroundColor: "white", elevation: 3 }}>
-        <Text style={{ fontSize: 18, alignSelf: "center", fontWeight: "700" }}>
-          Your orders
-        </Text>
+    <Screen style={styles.parent}>
+      <View style={styles.header}>
+        <Text style={styles.headerText}>Your orders</Text>
       </View>
 
       {ordersList && ordersList.length ? (
         loading ? (
-          <View style={{ marginTop: "50%" }}>
+          <View style={styles.indicatorContainer}>
             <ActivityIndicator size="large" color="black" />
           </View>
         ) : (
-          <View style={{ backgroundColor: "white", flex: 1 }}>
-            <Text style={{ marginLeft: 10, paddingVertical: 16, fontSize: 18 }}>
-              Past orders
-            </Text>
+          <View style={styles.pastOrderContainer}>
+            <Text style={styles.pastOrderText}>Past orders</Text>
             <ScrollView>
               <FlatList
                 data={ordersList}
                 keyExtractor={(item, index) =>
                   `${index} ${item.restaurantName}`
                 }
-                ItemSeparatorComponent={() => (
-                  <View
-                    style={{
-                      height: 1,
-                      backgroundColor: "#B7C6D9",
-                      marginVertical: 6,
-                      marginLeft: 90,
-                    }}
-                  />
-                )}
+                ItemSeparatorComponent={() => <View style={styles.separator} />}
                 renderItem={({ item }) => {
                   const {
                     restaurantName,
@@ -93,41 +80,23 @@ export default function OrdersScreen() {
                   } = item;
                   const totalItems = items.length;
                   return (
-                    <View style={{ flexDirection: "row", paddingLeft: 10 }}>
+                    <View style={styles.imageContainer}>
                       <Image
                         source={{ uri: restaurantImageUrl }}
-                        style={{ height: 70, width: 70 }}
+                        style={styles.imageStyle}
                       />
-                      <View
-                        style={{
-                          flex: 1,
-                          marginLeft: 10,
-                          justifyContent: "center",
-                        }}
-                      >
-                        <Text style={{ fontWeight: "700" }}>
-                          {restaurantName}
-                        </Text>
-                        <Text style={{ color: "#A8A8A8" }}>
+                      <View style={styles.detailsContainer}>
+                        <Text style={styles.bold}>{restaurantName}</Text>
+                        <Text style={styles.draft}>
                           {totalItems} {totalItems > 1 ? "items" : "item"} • $
                           {total}
                         </Text>
-                        <Text style={{ color: "#A8A8A8" }}>
+                        <Text style={styles.draft}>
                           {moment.unix(createdAt.seconds).format("MMM YY")} •
                           Completed
                         </Text>
                       </View>
-                      <View
-                        style={{
-                          alignSelf: "center",
-                          marginRight: 10,
-                          paddingVertical: 5,
-                          paddingHorizontal: 20,
-                          height: 30,
-                          backgroundColor: "#eee",
-                          borderRadius: 30,
-                        }}
-                      >
+                      <View style={styles.menuContainer}>
                         <Text>Menu</Text>
                       </View>
                     </View>
@@ -175,7 +144,7 @@ export default function OrdersScreen() {
           </View>
         </View>
       )}
-    </SafeAreaView>
+    </Screen>
   );
 }
 
@@ -185,5 +154,61 @@ const styles = StyleSheet.create({
   },
   parent: {
     flex: 1,
+  },
+  header: {
+    padding: 18,
+    backgroundColor: "white",
+    elevation: 3,
+  },
+  headerText: {
+    fontSize: 18,
+    alignSelf: "center",
+    fontWeight: "700",
+  },
+  indicatorContainer: {
+    marginTop: "50%",
+  },
+  pastOrderContainer: {
+    backgroundColor: "white",
+    flex: 1,
+  },
+  pastOrderText: {
+    marginLeft: 10,
+    paddingVertical: 16,
+    fontSize: 18,
+  },
+  separator: {
+    height: 1,
+    backgroundColor: "#B7C6D9",
+    marginVertical: 6,
+    marginLeft: 90,
+  },
+  imageContainer: {
+    flexDirection: "row",
+    paddingLeft: 10,
+  },
+  imageStyle: {
+    height: 70,
+    width: 70,
+  },
+  detailsContainer: {
+    flex: 1,
+    marginLeft: 10,
+    justifyContent: "center",
+  },
+  bold: {
+    fontWeight: "700",
+  },
+  draft: {
+    color: "#A8A8A8",
+  },
+  menuContainer: {
+    alignSelf: "center",
+    marginRight: 10,
+    paddingVertical: 5,
+    paddingHorizontal: 20,
+    height: 30,
+    backgroundColor: "#eee",
+    borderRadius: 30,
   },
 });

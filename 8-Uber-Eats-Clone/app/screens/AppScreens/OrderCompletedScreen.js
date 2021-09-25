@@ -1,22 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, SafeAreaView, ScrollView } from "react-native";
+import { View, Text, ScrollView, StyleSheet } from "react-native";
 import { useSelector } from "react-redux";
 import LottieView from "lottie-react-native";
-import firebase from "../../../firebase";
+
 import MenuItems from "../../components/Restaurant/MenuItems";
+import Screen from "../../components/Common/Screen";
+import firebase from "../../../firebase";
 
 export default function OrderCompletedScreen() {
-  const [lastOrder, setLastOrder] = useState({
-    items: [
-      {
-        title: "Bologna",
-        description: "With butter lettuce, tomato and sauce bechamel",
-        price: "$13.50",
-        image:
-          "https://www.modernhoney.com/wp-content/uploads/2019/08/Classic-Lasagna-14-scaled.jpg",
-      },
-    ],
-  });
+  const [lastOrder, setLastOrder] = useState({});
 
   const { items, restaurantName } = useSelector(
     (state) => state.cartReducer.selectedItems
@@ -47,22 +39,16 @@ export default function OrderCompletedScreen() {
   }, []);
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
-      <View
-        style={{
-          margin: 15,
-          alignItems: "center",
-          height: "100%",
-        }}
-      >
+    <Screen style={styles.screen}>
+      <View style={styles}>
         <LottieView
-          style={{ height: 100, alignSelf: "center", marginBottom: 30 }}
+          style={styles.checkmark}
           source={require("../../assets/animations/check-mark.json")}
           autoPlay
           speed={0.5}
           loop={false}
         />
-        <Text style={{ fontSize: 20, fontWeight: "bold" }}>
+        <Text style={styles.orderSuccess}>
           Your order at {restaurantName} has been placed for ${totalUSD}
         </Text>
         <ScrollView>
@@ -72,13 +58,38 @@ export default function OrderCompletedScreen() {
             marginLeft={10}
           />
           <LottieView
-            style={{ height: 200, alignSelf: "center" }}
+            style={styles.cooking}
             source={require("../../assets/animations/cooking.json")}
             autoPlay
             speed={0.5}
           />
         </ScrollView>
       </View>
-    </SafeAreaView>
+    </Screen>
   );
 }
+
+const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    backgroundColor: "white",
+  },
+  parent: {
+    margin: 15,
+    alignItems: "center",
+    height: "100%",
+  },
+  checkmark: {
+    height: 100,
+    alignSelf: "center",
+    marginBottom: 30,
+  },
+  orderSuccess: {
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+  cooking: {
+    height: 200,
+    alignSelf: "center",
+  },
+});

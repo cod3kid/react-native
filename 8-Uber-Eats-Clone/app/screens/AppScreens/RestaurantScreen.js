@@ -8,10 +8,8 @@ import ViewCart from "../../components/Restaurant/ViewCart";
 import { foods } from "../../utils/index";
 
 export default function RestaurantScreen({ route, navigation }) {
-  console.log("food", foods);
   return (
     <Screen>
-      {console.log("muixx", route.params.image)}
       <RestaurantAbout route={route} />
       <MenuItems
         restaurantName={route.params.name}

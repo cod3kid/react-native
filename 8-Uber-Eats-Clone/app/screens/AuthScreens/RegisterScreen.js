@@ -9,7 +9,7 @@ import {
 import firebase from "../../../firebase";
 import InputTextField from "../../components/Auth/InputTextField";
 import CustomButton from "../../components/Auth/CustomButton";
-import UberEatsLogo from "../../assets/uber-eats-flat-cropped.svg";
+import UberEatsLogo from "../../assets/images/uber-eats-flat-cropped.svg";
 
 // const validationSchema = Yup.object().shape({
 //   email: Yup.string().required().email().label("Email"),

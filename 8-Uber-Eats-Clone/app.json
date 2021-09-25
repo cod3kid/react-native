@@ -6,7 +6,7 @@
     "orientation": "portrait",
     "icon": "./app/assets/icon.png",
     "splash": {
-      "image": "./app/assets/uber-eats-splash.png",
+      "image": "./app/assets/images/uber-eats-splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#142328"
     },
