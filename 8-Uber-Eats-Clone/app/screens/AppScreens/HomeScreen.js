@@ -15,9 +15,9 @@ import Categories from "../../components/Home/Categories";
 import HeaderTabs from "../../components/Home/HeaderTabs";
 import RestaurantItems from "../../components/Home/RestaurantItems";
 import LocationPicker from "../../components/Home/LocationPicker";
+import config from "../../config/env";
 
-const YELP_API_KEY =
-  "hpXiC3Y3_1RuP-9R1BJICToII6bQ7Jl3ZT__A5Jgg0GqTgNoqkBKlt-hTW1WyD9TSdjgPwFwJc2ZVDJWwZdnIYI2JNcgzP26P3NRRbcIROV-HsqB37tPMGsuxR1MYXYx";
+const YELP_API_KEY = config.YELP_API_KEY;
 
 export default function HomeScreen({ navigation }) {
   const cityState = useSelector((state) => state.cityReducer);

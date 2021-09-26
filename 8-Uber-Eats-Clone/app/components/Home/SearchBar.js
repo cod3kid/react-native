@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import AntDesign from "react-native-vector-icons/AntDesign";
+import config from "../../config/env";
 
 export default function SearchBar() {
   const navigation = useNavigation();
@@ -21,7 +22,7 @@ export default function SearchBar() {
       }}
     >
       <GooglePlacesAutocomplete
-        query={{ key: "AIzaSyDoHciDQ0huvuCejI1Js4dwbA3IxeRcbrE" }}
+        query={{ key: config.GOOGLE_PLACES_API_KEY }}
         onPress={(data, details = null) => {
           dispatch({
             type: "CHANGE_CITY_DATA",

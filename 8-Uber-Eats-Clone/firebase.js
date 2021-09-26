@@ -1,12 +1,13 @@
 import firebase from "firebase";
+import config from "./app/config/env";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyB_Lcr-Bw2DXbTFj3kUgJnbb6RfmKLfxhc",
-  authDomain: "uber-eats-clone-863a0.firebaseapp.com",
-  projectId: "uber-eats-clone-863a0",
-  storageBucket: "uber-eats-clone-863a0.appspot.com",
-  messagingSenderId: "322390955701",
-  appId: "1:322390955701:web:6b281ae1cb0bc2a17450fc",
+  apiKey: config.FIREBASE_API_KEY,
+  authDomain: FIREBASE_AUTH_DOMAIN,
+  projectId: FIREBASE_PROJECT_ID,
+  storageBucket: FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: FIREBASE_MESSAGING_SENDER_ID,
+  appId: FIREBASE_APP_ID,
 };
 
 !firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app();
