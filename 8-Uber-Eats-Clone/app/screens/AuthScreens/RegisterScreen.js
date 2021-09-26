@@ -6,7 +6,9 @@ import {
   View,
   TouchableWithoutFeedback,
   Keyboard,
+  Alert,
 } from "react-native";
+
 import firebase from "../../../firebase";
 import InputTextField from "../../components/Auth/InputTextField";
 import CustomButton from "../../components/Auth/CustomButton";
@@ -29,6 +31,7 @@ function RegisterScreen({ navigation }) {
       await auth
         .createUserWithEmailAndPassword(email, password)
         .then((res) => {
+          Alert.alert("Account created");
           return res.user.updateProfile({
             displayName: name,
           });
@@ -36,17 +39,14 @@ function RegisterScreen({ navigation }) {
         .catch((err) => {
           console.log(err);
         });
+      navigation.navigate("Login");
     }
   };
 
   return (
     <View style={{ paddingVertical: 50, padding: 20 }}>
       <UberEatsLogo height={100} width={200} style={{ alignSelf: "center" }} />
-      {/* <View>
-        <Text style={{ fontSize: 24, fontWeight: "400", marginBottom: 10 }}>
-          Welcome Back
-        </Text>
-      </View> */}
+
       <View>
         <InputTextField
           iconColor="#818B95"
