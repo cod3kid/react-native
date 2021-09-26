@@ -1,5 +1,11 @@
 import React, { useState, useContext } from "react";
-import { StyleSheet, Text, View, TouchableWithoutFeedback } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from "react-native";
 import firebase from "../../../firebase";
 import InputTextField from "../../components/Auth/InputTextField";
 import CustomButton from "../../components/Auth/CustomButton";
@@ -19,6 +25,7 @@ function LoginScreen({ navigation }) {
   const [password, setPassword] = useState("");
 
   const handleLogin = async () => {
+    Keyboard.dismiss();
     if (email !== "" && password !== "") {
       await auth
         .signInWithEmailAndPassword(email, password)

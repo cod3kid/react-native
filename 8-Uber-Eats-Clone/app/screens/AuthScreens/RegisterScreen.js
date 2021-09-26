@@ -5,6 +5,7 @@ import {
   Text,
   View,
   TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 import firebase from "../../../firebase";
 import InputTextField from "../../components/Auth/InputTextField";
@@ -23,6 +24,7 @@ function RegisterScreen({ navigation }) {
   const [password, setPassword] = useState("");
 
   const handleRegister = async () => {
+    Keyboard.dismiss();
     if (email !== "" && password !== "") {
       await auth
         .createUserWithEmailAndPassword(email, password)
