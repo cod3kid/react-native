@@ -6,7 +6,7 @@
     "orientation": "portrait",
     "icon": "./app/assets/images/icon.png",
     "splash": {
-      "image": "./app/assets/images/instagram-splash.png",
+      "image": "./app/assets/images/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
