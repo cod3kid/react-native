@@ -1,15 +1,20 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import { useFonts } from "expo-font";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import AppLoading from "expo-app-loading";
 
+import t, { getCurrentLanguage } from "../../utils/translations";
 import Screen from "../../components/Common/Screen";
-import CustomInput from "../../components/Common/Auth/CustomInput";
-import CustomButton from "../../components/Common/Auth/CustomButton";
+import CustomInput from "../../components/Auth/CustomInput";
+import CustomButton from "../../components/Auth/CustomButton";
+import LanguageModal from "../../components/Auth/LanguageModal";
 
 export default function LoginScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isModalVisible, setModalVisible] = useState(false);
+
   const [fontsLoaded] = useFonts({
     Billabong: require("../../assets/fonts/billabong.ttf"),
   });
@@ -20,9 +25,18 @@ export default function LoginScreen() {
 
   return (
     <Screen style={{ justifyContent: "space-between" }}>
-      <View>
-        <Text>English</Text>
-      </View>
+      <TouchableWithoutFeedback onPress={() => setModalVisible(true)}>
+        <View
+          style={{
+            marginTop: 15,
+            flexDirection: "row",
+            justifyContent: "center",
+          }}
+        >
+          <Text>{getCurrentLanguage()}</Text>
+          <MaterialCommunityIcons name="chevron-down" size={20} color="black" />
+        </View>
+      </TouchableWithoutFeedback>
       <View
         style={{
           justifyContent: "flex-start",
@@ -33,13 +47,13 @@ export default function LoginScreen() {
         <View style={{ width: "100%", padding: 10 }}>
           <CustomInput
             iconColor="#818B95"
-            placeholder="Email"
+            placeholder={t("email")}
             value={email}
             onChangeText={(text) => setEmail(text)}
           />
           <CustomInput
             iconColor="#818B95"
-            placeholder="Password"
+            placeholder={t("password")}
             value={password}
             onChangeText={(text) => setPassword(text)}
             isPassword
@@ -51,6 +65,10 @@ export default function LoginScreen() {
       <View>
         <Text>Sign up text</Text>
       </View>
+      <LanguageModal
+        isModalVisible={isModalVisible}
+        setModalVisible={setModalVisible}
+      />
     </Screen>
   );
 }
