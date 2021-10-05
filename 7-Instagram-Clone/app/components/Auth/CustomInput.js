@@ -34,7 +34,7 @@ export default function CustomInput({
             <MaterialCommunityIcons
               name={showPassword ? "eye-off" : "eye"}
               size={24}
-              color="black"
+              color={showPassword ? "grey" : "#1C7CFC"}
             />
           </View>
         </TouchableWithoutFeedback>
@@ -46,7 +46,7 @@ export default function CustomInput({
 const styles = StyleSheet.create({
   customInput: {
     flexDirection: "row",
-    padding: 10,
+    padding: 8,
     marginVertical: 5,
     borderColor: "#B7C6D9",
     borderWidth: 1,
@@ -56,6 +56,6 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     flex: 1,
     borderWidth: 0,
-    fontSize: 18,
+    fontSize: 14,
   },
 });

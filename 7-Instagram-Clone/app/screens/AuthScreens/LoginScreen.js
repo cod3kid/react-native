@@ -1,69 +1,41 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableWithoutFeedback } from "react-native";
-import { useFonts } from "expo-font";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { Divider } from "react-native-elements";
-import AppLoading from "expo-app-loading";
 
-import t, { getCurrentLanguage } from "../../utils/translations";
+import t from "../../utils/translations";
 import Screen from "../../components/Common/Screen";
 import CustomInput from "../../components/Auth/CustomInput";
 import CustomButton from "../../components/Auth/CustomButton";
 import LanguageModal from "../../components/Auth/LanguageModal";
+import LanguageSelector from "../../components/Auth/LanguageSelector";
+import InstagramText from "../../components/Auth/InstagramText";
 
-export default function LoginScreen() {
+export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isModalVisible, setModalVisible] = useState(false);
 
-  const [fontsLoaded] = useFonts({
-    Billabong: require("../../assets/fonts/billabong.ttf"),
-  });
-
-  if (!fontsLoaded) {
-    return <AppLoading />;
-  }
-
   return (
-    <Screen
-      style={{ justifyContent: "space-between", backgroundColor: "white" }}
-    >
-      <TouchableWithoutFeedback onPress={() => setModalVisible(true)}>
-        <View
-          style={{
-            marginTop: 15,
-            flexDirection: "row",
-            justifyContent: "center",
-          }}
-        >
-          <Text>{getCurrentLanguage()}</Text>
-          <MaterialCommunityIcons name="chevron-down" size={20} color="black" />
-        </View>
-      </TouchableWithoutFeedback>
-      <View
-        style={{
-          justifyContent: "flex-start",
-          alignItems: "center",
-        }}
-      >
-        <Text style={styles.instagramText}>Instagram</Text>
-        <View style={{ width: "100%", padding: 10 }}>
+    <Screen style={styles.screen}>
+      <LanguageSelector onPress={() => setModalVisible(true)} />
+      <View style={styles.mainContainer}>
+        <InstagramText />
+        <View style={styles.formContainer}>
           <CustomInput
-            iconColor="#818B95"
             placeholder={t("email")}
             value={email}
             onChangeText={(text) => setEmail(text)}
           />
           <CustomInput
-            iconColor="#818B95"
             placeholder={t("password")}
             value={password}
             onChangeText={(text) => setPassword(text)}
             isPassword
             showIcon
           />
-          <CustomButton title="Log In" />
+          <CustomButton title={t("loginButton")} />
         </View>
+
         <View
           style={{
             padding: 5,
@@ -86,7 +58,7 @@ export default function LoginScreen() {
           style={{
             flexDirection: "row",
             alignItems: "center",
-            paddingHorizontal: 15,
+            paddingHorizontal: 30,
             paddingVertical: 10,
           }}
         >
@@ -103,8 +75,12 @@ export default function LoginScreen() {
           </Text>
           <View style={{ backgroundColor: "#ADB3BC", height: 0.5, flex: 1 }} />
         </View>
-        <View>
-          <Text>Login with facebook</Text>
+
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <MaterialCommunityIcons name="facebook" size={30} color="#1778F2" />
+          <Text style={{ color: "#1778F2", fontWeight: "bold", marginLeft: 5 }}>
+            {t("loginWithFacebook")}
+          </Text>
         </View>
       </View>
 
@@ -119,9 +95,13 @@ export default function LoginScreen() {
         }}
       >
         <Text style={{ color: "#ADB3BC" }}>{t("preSignUpText")} </Text>
-        <Text style={{ color: "#30618A", fontWeight: "bold" }}>
-          {t("signUp")}.
-        </Text>
+        <TouchableWithoutFeedback
+          onPress={() => navigation.navigate("Register")}
+        >
+          <Text style={{ color: "#30618A", fontWeight: "bold" }}>
+            {t("signUp")}.
+          </Text>
+        </TouchableWithoutFeedback>
       </View>
       <LanguageModal
         isModalVisible={isModalVisible}
@@ -132,10 +112,16 @@ export default function LoginScreen() {
 }
 
 const styles = StyleSheet.create({
-  instagramText: {
-    marginLeft: 20,
-    fontSize: 55,
-    color: "black",
-    fontFamily: "Billabong",
+  screen: {
+    justifyContent: "space-between",
+    backgroundColor: "white",
+  },
+  mainContainer: {
+    justifyContent: "flex-start",
+    alignItems: "center",
+  },
+  formContainer: {
+    width: "100%",
+    padding: 30,
   },
 });
