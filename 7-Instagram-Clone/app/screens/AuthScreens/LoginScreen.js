@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import { useFonts } from "expo-font";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Divider } from "react-native-elements";
 import AppLoading from "expo-app-loading";
 
 import t, { getCurrentLanguage } from "../../utils/translations";
@@ -24,7 +25,9 @@ export default function LoginScreen() {
   }
 
   return (
-    <Screen style={{ justifyContent: "space-between" }}>
+    <Screen
+      style={{ justifyContent: "space-between", backgroundColor: "white" }}
+    >
       <TouchableWithoutFeedback onPress={() => setModalVisible(true)}>
         <View
           style={{
@@ -61,9 +64,64 @@ export default function LoginScreen() {
           />
           <CustomButton title="Log In" />
         </View>
+        <View
+          style={{
+            padding: 5,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Text
+            style={{
+              textAlign: "center",
+            }}
+          >
+            <Text style={{ color: "#ADB3BC" }}>{t("forgotLoginText")} </Text>
+            <Text style={{ color: "#30618A", fontWeight: "bold" }}>
+              {t("getLoginHelp")}.
+            </Text>
+          </Text>
+        </View>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            paddingHorizontal: 15,
+            paddingVertical: 10,
+          }}
+        >
+          <View style={{ backgroundColor: "#ADB3BC", height: 0.5, flex: 1 }} />
+          <Text
+            style={{
+              paddingHorizontal: 5,
+              fontWeight: "bold",
+              color: "#ADB3BC",
+            }}
+          >
+            {" "}
+            {t("or").toUpperCase()}{" "}
+          </Text>
+          <View style={{ backgroundColor: "#ADB3BC", height: 0.5, flex: 1 }} />
+        </View>
+        <View>
+          <Text>Login with facebook</Text>
+        </View>
       </View>
-      <View>
-        <Text>Sign up text</Text>
+
+      <View
+        style={{
+          flexDirection: "row",
+          padding: 15,
+          justifyContent: "center",
+          alignItems: "center",
+          borderTopWidth: 0.5,
+          borderTopColor: "#ADB3BC",
+        }}
+      >
+        <Text style={{ color: "#ADB3BC" }}>{t("preSignUpText")} </Text>
+        <Text style={{ color: "#30618A", fontWeight: "bold" }}>
+          {t("signUp")}.
+        </Text>
       </View>
       <LanguageModal
         isModalVisible={isModalVisible}
