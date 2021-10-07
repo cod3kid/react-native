@@ -19,6 +19,9 @@ i18n.translations = {
     loginWithFacebook: "Log In with Facebook",
     preSignUpText: "Don't have an account?",
     signUp: "Sign up",
+    signUpWithEmailOrPhone: "Sign up with email or phone number",
+    preLogInText: "Already have an account?",
+    footerLogIn: "Log in",
 
     English: "English",
     Spanish: "Spanish",
@@ -35,6 +38,10 @@ i18n.translations = {
     loginWithFacebook: "Iniciar sesión con Facebook",
     preSignUpText: "¿No tienes una cuenta?",
     signUp: "Registrate",
+    signUpWithEmailOrPhone:
+      "Resgistrate con tu correo electrónico o número de teléfono",
+    preLogInText: "Ya tienes una cuenta?",
+    footerLogIn: "Inicia sesión",
 
     English: "Ingles",
     Spanish: "Espanol",

@@ -11,11 +11,12 @@ import { Overlay } from "react-native-elements";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import t from "../../utils/translations";
-import { languages } from "../../utils/index";
+import countryCodes from "../../utils/countrycodes";
 import { storeAppLanguage } from "../../utils/storage";
 import { TextInput } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 
-export default function LanguageModal({ isModalVisible, setModalVisible }) {
+export default function PhoneCodesModal({ isModalVisible, setModalVisible }) {
   const changeCurrentAppLanguage = (id) => {
     i18n.locale = id;
     storeAppLanguage(id);
@@ -33,21 +34,25 @@ export default function LanguageModal({ isModalVisible, setModalVisible }) {
         <MaterialCommunityIcons name="magnify" size={24} color="grey" />
         <TextInput style={styles.searchPlaceholder} placeholder={t("search")} />
       </View>
-      <FlatList
-        data={languages}
-        keyExtractor={(item) => item.language.toString()}
-        ItemSeparatorComponent={() => <View style={styles.separator} />}
-        renderItem={({ item }) => {
-          const { language, native, id } = item;
-          return (
-            <TouchableOpacity onPress={() => changeCurrentAppLanguage(id)}>
-              <View style={styles.listItem}>
-                <Text style={styles.listText}>{t(language)}</Text>
-              </View>
-            </TouchableOpacity>
-          );
-        }}
-      />
+      <ScrollView>
+        <FlatList
+          data={countryCodes}
+          keyExtractor={(item) => item.name.toString()}
+          ItemSeparatorComponent={() => <View style={styles.separator} />}
+          renderItem={({ item }) => {
+            const { name, dial_code } = item;
+            return (
+              <TouchableOpacity onPress={() => changeCurrentAppLanguage(id)}>
+                <View style={styles.listItem}>
+                  <Text style={styles.listText}>
+                    {name} {dial_code}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            );
+          }}
+        />
+      </ScrollView>
     </Overlay>
   );
 }
