@@ -9,6 +9,7 @@ import {
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 export default function CustomInput({
+  name,
   placeholder,
   value,
   onChangeText,
@@ -19,6 +20,7 @@ export default function CustomInput({
   return (
     <View style={styles.customInput}>
       <TextInput
+        name={name}
         value={value}
         onChangeText={onChangeText}
         style={styles.textInput}
