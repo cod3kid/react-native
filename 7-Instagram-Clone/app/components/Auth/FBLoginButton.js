@@ -4,9 +4,9 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import t from "../../utils/translations";
 
-export default function FBLoginButton({ backgroundColor, color }) {
+export default function FBLoginButton({ backgroundColor, color, onPress }) {
   return (
-    <TouchableOpacity style={styles.commonFlex}>
+    <TouchableOpacity onPress={onPress} style={styles.commonFlex}>
       <View style={[styles.commonFlex, styles.container, { backgroundColor }]}>
         <MaterialCommunityIcons name="facebook" size={30} color={color} />
         <Text style={[styles.text, { color }]}>{t("loginWithFacebook")}</Text>

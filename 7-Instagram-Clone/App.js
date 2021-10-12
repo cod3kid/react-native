@@ -3,10 +3,12 @@ import AppLoading from "expo-app-loading";
 import { NavigationContainer } from "@react-navigation/native";
 import i18n from "i18n-js";
 
-import { getAppLanguage, storeAppLanguage } from "./app/utils/storage";
+import { getAppLanguage, getUserData } from "./app/utils/storage";
 import AuthNavigator from "./app/navigators/AuthNavigator";
+import AppNavigator from "./app/navigators/AppNavigator";
 
 export default function App() {
+  const [user, setUser] = useState(false);
   const [isReady, setIsReady] = useState(false);
 
   const getOrSetCurrentLanguage = async () => {
@@ -17,10 +19,20 @@ export default function App() {
     return (i18n.locale = lang);
   };
 
+  const restoreUser = async () => {
+    const user = await getUserData();
+    if (user) setUser(user);
+  };
+
+  const preloadingRituals = async () => {
+    getOrSetCurrentLanguage();
+    restoreUser();
+  };
+
   if (!isReady)
     return (
       <AppLoading
-        startAsync={getOrSetCurrentLanguage}
+        startAsync={preloadingRituals}
         onError={() => {
           console.log("Error Occured");
         }}
@@ -30,7 +42,7 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <AuthNavigator />
+      {user ? <AppNavigator /> : <AuthNavigator />}
     </NavigationContainer>
   );
 }
