@@ -1,13 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import { TouchableWithoutFeedback } from "react-native";
 import { View, StyleSheet, Text } from "react-native";
 
 import { removeUserData } from "../../utils/storage";
+import AuthContext from "../../helpers/context";
 import Screen from "../../components/Common/Screen";
 
 export default function SettingsScreen() {
+  const { setUser } = useContext(AuthContext);
+
   const handleLogout = () => {
     removeUserData();
+    setUser(null);
   };
 
   return (
@@ -23,7 +27,8 @@ export default function SettingsScreen() {
 
 const styles = StyleSheet.create({
   screen: {
-    justifyContent: "space-between",
+    flex: 1,
+    justifyContent: "center",
     backgroundColor: "white",
   },
 });

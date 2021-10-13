@@ -11,7 +11,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 
 import t from "../../utils/translations";
-import { colors } from "../../utils/colors";
+import { lightColors, darkColors } from "../../utils/colors";
 import firebase from "../../config/firebase";
 import Screen from "../../components/Common/Screen";
 import CustomInput from "../../components/Auth/CustomInput";
@@ -131,7 +131,6 @@ export default function LoginScreen({ navigation }) {
           )}
         </Formik>
         <OrContainer paddingHorizontal={30} />
-        <FBLoginButton backgroundColor="white" color="#1778F2" />
       </View>
       <Footer
         text={t("preLogInText")}
@@ -178,10 +177,10 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   forgotLoginText: {
-    color: colors.grey,
+    color: lightColors.lightGrey,
   },
   getLoginHelpText: {
-    color: colors.darkBlue,
+    color: lightColors.darkBlue,
     fontWeight: "bold",
   },
 });

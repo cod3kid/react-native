@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { View, Text, StyleSheet, Keyboard } from "react-native";
 import * as Yup from "yup";
 import * as Facebook from "expo-facebook";
 import { Formik } from "formik";
+import { useSelector, useDispatch } from "react-redux";
 
 import firebase from "../../config/firebase";
-import { getUserData, storeUserData } from "../../utils/storage";
+import { storeUserData } from "../../utils/storage";
 import t from "../../utils/translations";
-import { colors } from "../../utils/colors";
+import { darkColors, lightColors } from "../../utils/colors";
+import AuthContext from "../../helpers/context";
 import Screen from "../../components/Common/Screen";
 import CustomInput from "../../components/Auth/CustomInput";
 import CustomButton from "../../components/Auth/CustomButton";
@@ -23,10 +25,20 @@ import Alert from "../../components/Common/Alert";
 const auth = firebase.auth();
 const db = firebase.firestore();
 export default function LoginScreen({ navigation }) {
+  const { setUser } = useContext(AuthContext);
+  const isDark = useSelector((state) => state.themeReducer);
   const [isModalVisible, setModalVisible] = useState(false);
   const [isLoaderVisible, setLoaderVisible] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState(null);
+
+  const main = isDark ? darkColors.main : lightColors.main;
+  const primary = isDark ? darkColors.primary : lightColors.primary;
+  const blue = isDark ? darkColors.lightBlue : lightColors.mediumBlue;
+  const containerColor = isDark ? darkColors.darkGrey : lightColors.offWhite;
+  const borderColor = isDark ? darkColors.darkGrey : lightColors.lightGrey;
+  const darkBlueText = isDark ? darkColors.aceBlue : lightColors.darkBlue;
+  const dividerColor = isDark ? darkColors.secondary : lightColors.darkGrey;
 
   const initialValues = {
     email: "",
@@ -42,12 +54,11 @@ export default function LoginScreen({ navigation }) {
 
   const handleFacebookLogin = async () => {
     try {
-      await Facebook.initializeAsync("878551863054084"); // enter your Facebook App Id
+      await Facebook.initializeAsync(process.env.FACEBOOK_APP_ID); // enter your Facebook App Id
       const { type, token } = await Facebook.logInWithReadPermissionsAsync({
         permissions: ["public_profile", "email"],
       });
       if (type === "success") {
-        // SENDING THE TOKEN TO FIREBASE TO HANDLE AUTH
         const credential = firebase.auth.FacebookAuthProvider.credential(token);
         firebase
           .auth()
@@ -59,8 +70,6 @@ export default function LoginScreen({ navigation }) {
           .catch((error) => {
             console.log("Error occurred ", error);
           });
-      } else {
-        // type === 'cancel'
       }
     } catch ({ message }) {
       alert(`Facebook Login Error: ${message}`);
@@ -74,50 +83,86 @@ export default function LoginScreen({ navigation }) {
 
     await auth
       .signInWithEmailAndPassword(email, password)
-      .then(async (res) => {
-        const docRef = db.collection("users").doc(res.user.uidww);
-        return docRef
-          .get()
-          .then((doc) => {
-            if (doc.exists) {
-              storeUserData(doc.data());
-              setLoaderVisible(false);
-              return;
-            } else {
-              setLoaderVisible(false);
-              return;
-            }
-          })
-          .catch((error) => {
-            console.log("Error getting document:", error);
-          });
+      .then((res) => {
+        const docRef = db.collection("users").doc(res.user.uid);
+        return docRef.get().then(async (doc) => {
+          if (doc.exists) {
+            const userData = doc.data();
+            await storeUserData(userData);
+            setUser(userData);
+          }
+          setLoaderVisible(false);
+        });
       })
       .catch((error) => {
+        console.log(error);
         setAlertMessage("Incorrect Credentials");
         setShowAlert(true);
         setLoaderVisible(false);
+        return;
       });
   };
 
+  const styles = StyleSheet.create({
+    screen: {
+      justifyContent: "space-between",
+      backgroundColor: main,
+    },
+    mainContainer: {
+      justifyContent: "flex-start",
+      alignItems: "center",
+    },
+    formContainer: {
+      width: "100%",
+      padding: 30,
+      paddingBottom: 15,
+    },
+    forgotPassContainer: {
+      padding: 5,
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    textContainer: {
+      textAlign: "center",
+    },
+    forgotLoginText: {
+      color: dividerColor,
+      fontSize: 13,
+    },
+    getLoginHelpText: {
+      color: darkBlueText,
+      fontWeight: "bold",
+      fontSize: 13,
+    },
+  });
+
   return (
     <Screen style={styles.screen}>
-      <LanguageSelector onPress={() => setModalVisible(true)} />
+      <LanguageSelector
+        onPress={() => setModalVisible(true)}
+        color={dividerColor}
+      />
       <View style={styles.mainContainer}>
-        <InstagramText />
+        <InstagramText color={primary} />
         <Formik
           initialValues={initialValues}
           onSubmit={onSubmit}
           validationSchema={validationSchema}
+          validateOnMount
         >
           {({ handleChange, handleBlur, handleSubmit, values, isValid }) => (
             <View style={styles.formContainer}>
               <CustomInput
+                containerColor={containerColor}
+                borderColor={borderColor}
                 name="email"
                 placeholder={t("email")}
                 value={values.email}
                 onChangeText={handleChange("email")}
               />
               <CustomInput
+                containerColor={containerColor}
+                borderColor={borderColor}
                 name="password"
                 placeholder={t("password")}
                 value={values.password}
@@ -125,7 +170,15 @@ export default function LoginScreen({ navigation }) {
                 isPassword
                 showIcon
               />
-              <CustomButton onPress={handleSubmit} title={t("loginButton")} />
+              <CustomButton
+                isValid={isValid}
+                color={blue}
+                inValidColor={
+                  isDark ? darkColors.mediumBlue : lightColors.lightBlue
+                }
+                onPress={handleSubmit}
+                title={t("loginButton")}
+              />
             </View>
           )}
         </Formik>
@@ -135,14 +188,16 @@ export default function LoginScreen({ navigation }) {
             <Text style={styles.getLoginHelpText}>{t("getLoginHelp")}.</Text>
           </Text>
         </View>
-        <OrContainer paddingHorizontal={30} />
+        <OrContainer color={dividerColor} paddingHorizontal={30} />
         <FBLoginButton
-          backgroundColor="white"
-          color="#1778F2"
+          backgroundColor={main}
+          color={blue}
           onPress={handleFacebookLogin}
         />
       </View>
       <Footer
+        primaryColor={dividerColor}
+        navColor={isDark ? darkColors.aceBlue : lightColors.darkBlue}
         text={t("preSignUpText")}
         navText={t("signUp")}
         onPress={() => navigation.navigate("Register")}
@@ -152,6 +207,7 @@ export default function LoginScreen({ navigation }) {
         setModalVisible={setModalVisible}
       />
       <AuthLoader
+        loaderColor={primary}
         isModalVisible={isLoaderVisible}
         setModalVisible={setLoaderVisible}
         title="Logging In..."
@@ -164,33 +220,3 @@ export default function LoginScreen({ navigation }) {
     </Screen>
   );
 }
-
-const styles = StyleSheet.create({
-  screen: {
-    justifyContent: "space-between",
-    backgroundColor: "white",
-  },
-  mainContainer: {
-    justifyContent: "flex-start",
-    alignItems: "center",
-  },
-  formContainer: {
-    width: "100%",
-    padding: 30,
-  },
-  forgotPassContainer: {
-    padding: 5,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  textContainer: {
-    textAlign: "center",
-  },
-  forgotLoginText: {
-    color: colors.grey,
-  },
-  getLoginHelpText: {
-    color: colors.darkBlue,
-    fontWeight: "bold",
-  },
-});

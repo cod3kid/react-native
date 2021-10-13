@@ -2,7 +2,12 @@ import React, { useEffect } from "react";
 import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
 import { Overlay } from "react-native-elements";
 
-export default function AuthLoader({ isModalVisible, setModalVisible, title }) {
+export default function AuthLoader({
+  isModalVisible,
+  setModalVisible,
+  title,
+  loaderColor,
+}) {
   return (
     <Overlay
       isVisible={isModalVisible}
@@ -10,10 +15,15 @@ export default function AuthLoader({ isModalVisible, setModalVisible, title }) {
       overlayStyle={styles.overlayStyle}
     >
       <View
-        style={{ flexDirection: "row", justifyContent: "center", padding: 5 }}
+        style={{
+          flexDirection: "row",
+          justifyContent: "center",
+          alignItems: "center",
+          padding: 5,
+        }}
       >
-        <ActivityIndicator size="large" color="#1778F2" />
-        <Text style={{ color: "black", marginLeft: 5 }}>Loading ...</Text>
+        <ActivityIndicator size="large" color={loaderColor} />
+        <Text style={{ color: loaderColor, marginLeft: 5 }}>{title}</Text>
       </View>
     </Overlay>
   );

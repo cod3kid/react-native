@@ -13,10 +13,31 @@ export default function CustomInput({
   placeholder,
   value,
   onChangeText,
+  containerColor,
+  borderColor,
   isPassword = false,
   showIcon = false,
 }) {
   const [showPassword, setShowPassword] = useState(isPassword);
+
+  const styles = StyleSheet.create({
+    customInput: {
+      backgroundColor: containerColor,
+      flexDirection: "row",
+      padding: 8,
+      marginVertical: 5,
+      borderColor,
+      borderWidth: 1,
+      borderRadius: 4,
+    },
+    textInput: {
+      marginLeft: 10,
+      flex: 1,
+      borderWidth: 0,
+      fontSize: 14,
+    },
+  });
+
   return (
     <View style={styles.customInput}>
       <TextInput
@@ -44,20 +65,3 @@ export default function CustomInput({
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  customInput: {
-    flexDirection: "row",
-    padding: 8,
-    marginVertical: 5,
-    borderColor: "#B7C6D9",
-    borderWidth: 1,
-    borderRadius: 4,
-  },
-  textInput: {
-    marginLeft: 10,
-    flex: 1,
-    borderWidth: 0,
-    fontSize: 14,
-  },
-});

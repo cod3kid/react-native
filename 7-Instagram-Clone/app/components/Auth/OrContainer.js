@@ -3,12 +3,12 @@ import { View, Text, StyleSheet } from "react-native";
 
 import t from "../../utils/translations";
 
-export default function OrContainer({ paddingHorizontal }) {
+export default function OrContainer({ paddingHorizontal, color }) {
   return (
     <View style={[styles.container, { paddingHorizontal }]}>
-      <View style={styles.divider} />
-      <Text style={styles.text}> {t("or").toUpperCase()} </Text>
-      <View style={styles.divider} />
+      <View style={[styles.divider, { backgroundColor: color }]} />
+      <Text style={[styles.text, { color }]}> {t("or").toUpperCase()} </Text>
+      <View style={[styles.divider, { backgroundColor: color }]} />
     </View>
   );
 }
@@ -22,10 +22,8 @@ const styles = StyleSheet.create({
   text: {
     paddingHorizontal: 5,
     fontWeight: "bold",
-    color: "#ADB3BC",
   },
   divider: {
-    backgroundColor: "#ADB3BC",
     height: 0.5,
     flex: 1,
   },

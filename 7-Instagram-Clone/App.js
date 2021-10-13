@@ -1,15 +1,21 @@
 import React, { useState } from "react";
-import AppLoading from "expo-app-loading";
-import { NavigationContainer } from "@react-navigation/native";
 import i18n from "i18n-js";
+import AppLoading from "expo-app-loading";
 
-import { getAppLanguage, getUserData } from "./app/utils/storage";
+import { NavigationContainer } from "@react-navigation/native";
+import { Provider } from "react-redux";
+
+import configureStore from "./app/redux/store";
 import AuthNavigator from "./app/navigators/AuthNavigator";
 import AppNavigator from "./app/navigators/AppNavigator";
+import { getAppLanguage, getUserData } from "./app/utils/storage";
+import AuthContext from "./app/helpers/context";
+
+const store = configureStore();
 
 export default function App() {
-  const [user, setUser] = useState(false);
-  const [isReady, setIsReady] = useState(false);
+  const [user, setUser] = useState();
+  const [isReady, setIsReady] = useState();
 
   const getOrSetCurrentLanguage = async () => {
     const lang = await getAppLanguage();
@@ -21,10 +27,18 @@ export default function App() {
 
   const restoreUser = async () => {
     const user = await getUserData();
-    if (user) setUser(user);
+    if (user) {
+      setUser(user);
+      dispatch({
+        type: "SET_USER_DATA",
+        payload: {
+          ...user,
+        },
+      });
+    }
   };
 
-  const preloadingRituals = async () => {
+  const preloadingRituals = () => {
     getOrSetCurrentLanguage();
     restoreUser();
   };
@@ -41,8 +55,12 @@ export default function App() {
     );
 
   return (
-    <NavigationContainer>
-      {user ? <AppNavigator /> : <AuthNavigator />}
-    </NavigationContainer>
+    <Provider store={store}>
+      <AuthContext.Provider value={{ user, setUser }}>
+        <NavigationContainer>
+          {user ? <AppNavigator /> : <AuthNavigator />}
+        </NavigationContainer>
+      </AuthContext.Provider>
+    </Provider>
   );
 }

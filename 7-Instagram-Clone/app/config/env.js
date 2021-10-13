@@ -5,6 +5,7 @@ import {
   FIREBASE_APP_ID,
   FIREBASE_MESSAGING_SENDER_ID,
   FIREBASE_STORAGE_BUCKET,
+  FACEBOOK_APP_ID,
 } from "@env";
 
 const environmentVariable = {
@@ -14,6 +15,7 @@ const environmentVariable = {
   FIREBASE_APP_ID,
   FIREBASE_MESSAGING_SENDER_ID,
   FIREBASE_STORAGE_BUCKET,
+  FACEBOOK_APP_ID,
 };
 
 export default environmentVariable;
