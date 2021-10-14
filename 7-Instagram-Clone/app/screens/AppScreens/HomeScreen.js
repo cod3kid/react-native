@@ -8,8 +8,6 @@ import AuthContext from "../../helpers/context";
 
 export default function HomeScreen({ navigation }) {
   const isDark = useSelector((state) => state.themeReducer);
-  const { user } = useContext(AuthContext);
-
   const main = isDark ? darkColors.main : lightColors.main;
 
   const styles = StyleSheet.create({
@@ -22,7 +20,7 @@ export default function HomeScreen({ navigation }) {
   return (
     <Screen style={styles.screen}>
       <HomeHeader
-        onPressAddIcon={() => navigation.navigate("AddPost", { user })}
+        onPressAddIcon={() => navigation.navigate("AddPost")}
         onPressChatIcon={() => null}
       />
       {/* Pull to refresh Parent */}

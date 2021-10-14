@@ -1,11 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableWithoutFeedback,
-  Keyboard,
-} from "react-native";
+import { View, Text, StyleSheet, Keyboard } from "react-native";
 import { useSelector } from "react-redux";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -19,9 +13,7 @@ import CustomButton from "../../components/Auth/CustomButton";
 import LanguageModal from "../../components/Auth/LanguageModal";
 import LanguageSelector from "../../components/Auth/LanguageSelector";
 import InstagramText from "../../components/Common/InstagramText";
-import FBLoginButton from "../../components/Auth/FBLoginButton";
 import Footer from "../../components/Auth/Footer";
-import OrContainer from "../../components/Auth/OrContainer";
 import AuthLoader from "../../components/Auth/AuthLoader";
 import Alert from "../../components/Common/Alert";
 

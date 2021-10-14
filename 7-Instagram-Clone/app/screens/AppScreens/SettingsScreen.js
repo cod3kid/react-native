@@ -1,21 +1,15 @@
-import React, { useContext } from "react";
+import React from "react";
 import { TouchableWithoutFeedback } from "react-native";
 import { View, StyleSheet, Text } from "react-native";
 
-import { removeUserData } from "../../utils/storage";
+import firebase from "../../config/firebase";
 import Screen from "../../components/Common/Screen";
-import useAuth from "../../helpers/useAuth";
 
+const auth = firebase.auth();
 export default function SettingsScreen() {
-  const { logOut } = useAuth();
-
-  const handleLogout = () => {
-    logOut();
-  };
-
   return (
     <Screen style={styles.screen}>
-      <TouchableWithoutFeedback onPress={() => handleLogout()}>
+      <TouchableWithoutFeedback onPress={() => auth.logout()}>
         <View>
           <Text>Logout</Text>
         </View>

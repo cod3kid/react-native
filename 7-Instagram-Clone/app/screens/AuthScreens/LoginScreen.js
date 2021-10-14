@@ -6,10 +6,8 @@ import { Formik } from "formik";
 import { useSelector, useDispatch } from "react-redux";
 
 import firebase from "../../config/firebase";
-import { storeUserData } from "../../utils/storage";
 import t from "../../utils/translations";
 import { darkColors, lightColors } from "../../utils/colors";
-import AuthContext from "../../helpers/context";
 import Screen from "../../components/Common/Screen";
 import CustomInput from "../../components/Auth/CustomInput";
 import CustomButton from "../../components/Auth/CustomButton";
@@ -25,7 +23,6 @@ import Alert from "../../components/Common/Alert";
 const auth = firebase.auth();
 const db = firebase.firestore();
 export default function LoginScreen({ navigation }) {
-  const { setUser } = useContext(AuthContext);
   const isDark = useSelector((state) => state.themeReducer);
   const [isModalVisible, setModalVisible] = useState(false);
   const [isLoaderVisible, setLoaderVisible] = useState(false);
@@ -117,15 +114,15 @@ export default function LoginScreen({ navigation }) {
     await auth
       .signInWithEmailAndPassword(email, password)
       .then((res) => {
-        const docRef = db.collection("users").doc(res.user.uid);
-        return docRef.get().then(async (doc) => {
-          if (doc.exists) {
-            const userData = doc.data();
-            await storeUserData(userData);
-            setUser(userData);
-          }
-          setLoaderVisible(false);
-        });
+        // const docRef = db.collection("users").doc(res.user.uid);
+        // return docRef.get().then(async (doc) => {
+        //   if (doc.exists) {
+        //     const userData = doc.data();
+        //     await storeUserData(userData);
+        //     setUser(userData);
+        //   }
+        setLoaderVisible(false);
+        // });
       })
       .catch((error) => {
         console.log(error);

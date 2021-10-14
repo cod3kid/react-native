@@ -24,9 +24,10 @@ import { ActivityIndicator } from "react-native";
 const db = firebase.firestore();
 const screenWidth = Dimensions.get("window").width;
 
-export default function ProfileScreen() {
+export default function ProfileScreen({ navigation }) {
   const isDark = useSelector((state) => state.themeReducer);
-  const { user } = useContext(AuthContext);
+  const user = useSelector((state) => state.userReducer);
+
   const [profileData, setProfileData] = useState([]);
   const [loading, setLoading] = useState(false);
 
