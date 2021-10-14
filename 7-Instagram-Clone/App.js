@@ -29,12 +29,6 @@ export default function App() {
     const user = await getUserData();
     if (user) {
       setUser(user);
-      dispatch({
-        type: "SET_USER_DATA",
-        payload: {
-          ...user,
-        },
-      });
     }
   };
 

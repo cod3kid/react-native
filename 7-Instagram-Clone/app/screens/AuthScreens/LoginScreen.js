@@ -15,7 +15,7 @@ import CustomInput from "../../components/Auth/CustomInput";
 import CustomButton from "../../components/Auth/CustomButton";
 import LanguageModal from "../../components/Auth/LanguageModal";
 import LanguageSelector from "../../components/Auth/LanguageSelector";
-import InstagramText from "../../components/Auth/InstagramText";
+import InstagramText from "../../components/Common/InstagramText";
 import FBLoginButton from "../../components/Auth/FBLoginButton";
 import Footer from "../../components/Auth/Footer";
 import OrContainer from "../../components/Auth/OrContainer";
@@ -39,6 +39,39 @@ export default function LoginScreen({ navigation }) {
   const borderColor = isDark ? darkColors.darkGrey : lightColors.lightGrey;
   const darkBlueText = isDark ? darkColors.aceBlue : lightColors.darkBlue;
   const dividerColor = isDark ? darkColors.secondary : lightColors.darkGrey;
+
+  const styles = StyleSheet.create({
+    screen: {
+      justifyContent: "space-between",
+      backgroundColor: main,
+    },
+    mainContainer: {
+      justifyContent: "flex-start",
+      alignItems: "center",
+    },
+    formContainer: {
+      width: "100%",
+      padding: 30,
+      paddingBottom: 15,
+    },
+    forgotPassContainer: {
+      padding: 5,
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    textContainer: {
+      textAlign: "center",
+    },
+    forgotLoginText: {
+      color: dividerColor,
+      fontSize: 13,
+    },
+    getLoginHelpText: {
+      color: darkBlueText,
+      fontWeight: "bold",
+      fontSize: 13,
+    },
+  });
 
   const initialValues = {
     email: "",
@@ -102,39 +135,6 @@ export default function LoginScreen({ navigation }) {
         return;
       });
   };
-
-  const styles = StyleSheet.create({
-    screen: {
-      justifyContent: "space-between",
-      backgroundColor: main,
-    },
-    mainContainer: {
-      justifyContent: "flex-start",
-      alignItems: "center",
-    },
-    formContainer: {
-      width: "100%",
-      padding: 30,
-      paddingBottom: 15,
-    },
-    forgotPassContainer: {
-      padding: 5,
-      justifyContent: "center",
-      alignItems: "center",
-    },
-    textContainer: {
-      textAlign: "center",
-    },
-    forgotLoginText: {
-      color: dividerColor,
-      fontSize: 13,
-    },
-    getLoginHelpText: {
-      color: darkBlueText,
-      fontWeight: "bold",
-      fontSize: 13,
-    },
-  });
 
   return (
     <Screen style={styles.screen}>

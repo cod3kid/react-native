@@ -6,7 +6,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useSelector } from "react-redux";
 import { Formik } from "formik";
 import * as Yup from "yup";
 
@@ -18,7 +18,7 @@ import CustomInput from "../../components/Auth/CustomInput";
 import CustomButton from "../../components/Auth/CustomButton";
 import LanguageModal from "../../components/Auth/LanguageModal";
 import LanguageSelector from "../../components/Auth/LanguageSelector";
-import InstagramText from "../../components/Auth/InstagramText";
+import InstagramText from "../../components/Common/InstagramText";
 import FBLoginButton from "../../components/Auth/FBLoginButton";
 import Footer from "../../components/Auth/Footer";
 import OrContainer from "../../components/Auth/OrContainer";
@@ -29,10 +29,49 @@ const auth = firebase.auth();
 const db = firebase.firestore();
 
 export default function LoginScreen({ navigation }) {
+  const isDark = useSelector((state) => state.themeReducer);
   const [isModalVisible, setModalVisible] = useState(false);
   const [isLoaderVisible, setLoaderVisible] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState(null);
+
+  const main = isDark ? darkColors.main : lightColors.main;
+  const primary = isDark ? darkColors.primary : lightColors.primary;
+  const blue = isDark ? darkColors.lightBlue : lightColors.mediumBlue;
+  const containerColor = isDark ? darkColors.darkGrey : lightColors.offWhite;
+  const borderColor = isDark ? darkColors.darkGrey : lightColors.lightGrey;
+  const darkBlueText = isDark ? darkColors.aceBlue : lightColors.darkBlue;
+  const dividerColor = isDark ? darkColors.secondary : lightColors.darkGrey;
+
+  const styles = StyleSheet.create({
+    screen: {
+      justifyContent: "space-between",
+      backgroundColor: main,
+    },
+    mainContainer: {
+      justifyContent: "flex-start",
+      alignItems: "center",
+    },
+    formContainer: {
+      width: "100%",
+      padding: 30,
+    },
+    forgotPassContainer: {
+      padding: 5,
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    textContainer: {
+      textAlign: "center",
+    },
+    forgotLoginText: {
+      color: dividerColor,
+    },
+    getLoginHelpText: {
+      color: darkBlueText,
+      fontWeight: "bold",
+    },
+  });
 
   const initialValues = {
     name: "",
@@ -63,6 +102,7 @@ export default function LoginScreen({ navigation }) {
           .collection("users")
           .doc(res.user.uid)
           .set({
+            uid: res.user.uid,
             username,
             email,
             account_type: "public",
@@ -90,13 +130,17 @@ export default function LoginScreen({ navigation }) {
 
   return (
     <Screen style={styles.screen}>
-      <LanguageSelector onPress={() => setModalVisible(true)} />
+      <LanguageSelector
+        onPress={() => setModalVisible(true)}
+        color={dividerColor}
+      />
       <View style={styles.mainContainer}>
-        <InstagramText />
+        <InstagramText color={primary} />
         <Formik
           initialValues={initialValues}
           onSubmit={onSubmit}
           validationSchema={validationSchema}
+          validateOnMount
         >
           {({ handleChange, handleBlur, handleSubmit, values, isValid }) => (
             <View style={styles.formContainer}>
@@ -105,34 +149,51 @@ export default function LoginScreen({ navigation }) {
                 placeholder={t("fullName")}
                 value={values.name}
                 onChangeText={handleChange("name")}
+                containerColor={containerColor}
+                borderColor={borderColor}
               />
               <CustomInput
                 name="email"
                 placeholder={t("email")}
                 value={values.email}
                 onChangeText={handleChange("email")}
+                containerColor={containerColor}
+                borderColor={borderColor}
               />
               <CustomInput
                 name="username"
                 placeholder={t("username")}
                 value={values.username}
                 onChangeText={handleChange("username")}
+                containerColor={containerColor}
+                borderColor={borderColor}
               />
               <CustomInput
                 name="password"
                 placeholder={t("password")}
                 value={values.password}
                 onChangeText={handleChange("password")}
+                containerColor={containerColor}
+                borderColor={borderColor}
                 isPassword
                 showIcon
               />
-              <CustomButton onPress={handleSubmit} title={t("signUpButton")} />
+              <CustomButton
+                isValid={isValid}
+                color={blue}
+                inValidColor={
+                  isDark ? darkColors.mediumBlue : lightColors.lightBlue
+                }
+                onPress={handleSubmit}
+                title={t("signUpButton")}
+              />
             </View>
           )}
         </Formik>
-        <OrContainer paddingHorizontal={30} />
       </View>
       <Footer
+        primaryColor={dividerColor}
+        navColor={isDark ? darkColors.aceBlue : lightColors.darkBlue}
         text={t("preLogInText")}
         navText={t("footerLogIn")}
         onPress={() => navigation.navigate("Login")}
@@ -142,6 +203,7 @@ export default function LoginScreen({ navigation }) {
         setModalVisible={setModalVisible}
       />
       <AuthLoader
+        loaderColor={primary}
         isModalVisible={isLoaderVisible}
         setModalVisible={setLoaderVisible}
         title="Creating Account..."
@@ -154,33 +216,3 @@ export default function LoginScreen({ navigation }) {
     </Screen>
   );
 }
-
-const styles = StyleSheet.create({
-  screen: {
-    justifyContent: "space-between",
-    backgroundColor: "white",
-  },
-  mainContainer: {
-    justifyContent: "flex-start",
-    alignItems: "center",
-  },
-  formContainer: {
-    width: "100%",
-    padding: 30,
-  },
-  forgotPassContainer: {
-    padding: 5,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  textContainer: {
-    textAlign: "center",
-  },
-  forgotLoginText: {
-    color: lightColors.lightGrey,
-  },
-  getLoginHelpText: {
-    color: lightColors.darkBlue,
-    fontWeight: "bold",
-  },
-});

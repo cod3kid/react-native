@@ -3,15 +3,14 @@ import { TouchableWithoutFeedback } from "react-native";
 import { View, StyleSheet, Text } from "react-native";
 
 import { removeUserData } from "../../utils/storage";
-import AuthContext from "../../helpers/context";
 import Screen from "../../components/Common/Screen";
+import useAuth from "../../helpers/useAuth";
 
 export default function SettingsScreen() {
-  const { setUser } = useContext(AuthContext);
+  const { logOut } = useAuth();
 
   const handleLogout = () => {
-    removeUserData();
-    setUser(null);
+    logOut();
   };
 
   return (
