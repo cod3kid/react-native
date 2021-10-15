@@ -67,17 +67,37 @@ export default function AddPostScreen({ route }) {
 
       const downloadUrl = await snapshot.ref.getDownloadURL();
 
-      console.warn(user.uid);
-
       try {
-        await db.collection("posts").add({
-          uid: user.uid,
-          downloadUrl,
-          comments: [],
-          likes: [],
-          caption: "Blah",
-          timestamp: Date.now(),
-        });
+        await db
+          .collection("posts")
+          .add({
+            uid: user.uid,
+            downloadUrl,
+            comments: [],
+            likes: [],
+            caption: "Blah",
+            timestamp: Date.now(),
+          })
+          .then(async (res) => {
+            const userData = [];
+            await db
+              .collection("users")
+              .doc(user.uid)
+              .get()
+              .then(async (doc) => {
+                const docRef = await db.collection("users").doc(user.uid);
+                console.log("doco", doc.data());
+                const setWithMerge = docRef.set(
+                  {
+                    posts: doc.data().posts + 1,
+                  },
+                  { merge: true }
+                );
+              })
+              .catch((error) => {
+                console.log("Error getting documents: ", error);
+              });
+          });
       } catch (ex) {
         console.log("Erro", ex);
       }

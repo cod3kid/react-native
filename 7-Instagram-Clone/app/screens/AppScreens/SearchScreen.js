@@ -25,7 +25,7 @@ export default function SearchScreen({ navigation }) {
   const isDark = useSelector((state) => state.themeReducer);
   const [search, setSearch] = useState("");
   const [searchedUser, setSearchedUser] = useState(null);
-  const { main, borderColor, primary, dividerColor, blue, containerColor } =
+  const { main, primary, dividerColor, blue, containerColor } =
     getThemeColors(isDark);
   const exploreImages = new Array(30).fill(
     { imageUrl: "https://picsum.photos/200" },
@@ -65,7 +65,7 @@ export default function SearchScreen({ navigation }) {
       return styles.oddColumn;
     }
 
-    if (exploreImages.lenght > 2 && index % 3 === 0) {
+    if (exploreImages.length > 2 && index % 3 === 0) {
       return styles.oddColumn;
     }
 

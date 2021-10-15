@@ -7,10 +7,11 @@ export default function ProfileImage({ imageUrl }) {
   const styles = StyleSheet.create({
     container: {
       paddingHorizontal: 10,
+      paddingVertical: 10,
     },
     image: {
-      height: 100,
-      width: 100,
+      height: 90,
+      width: 90,
       borderRadius: 50,
     },
   });

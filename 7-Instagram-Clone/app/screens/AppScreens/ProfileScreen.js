@@ -16,13 +16,14 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Screen from "../../components/Common/Screen";
 import firebase from "../../config/firebase";
 import { getThemeColors } from "../../helpers";
+import ProfilePostList from "../../components/Common/ProfilePostList";
+import ProfileTabsContainer from "../../components/Common/ProfileTabsContainer";
 import ProfileBio from "../../components/Profile/ProfileBio";
 import ProfileBoxContainer from "../../components/Common/ProfileBoxContainer";
 import ProfileHeader from "../../components/Profile/ProfileHeader";
 import ProfileImage from "../../components/Common/ProfileImage";
 
 const db = firebase.firestore();
-const screenWidth = Dimensions.get("window").width;
 
 export default function ProfileScreen({ navigation }) {
   const isDark = useSelector((state) => state.themeReducer);
@@ -30,15 +31,15 @@ export default function ProfileScreen({ navigation }) {
   const [profileData, setProfileData] = useState([]);
   const [userData, setUserData] = useState({});
   const [loading, setLoading] = useState(false);
-  const { main, borderColor, primary } = getThemeColors(isDark);
+  const { main, borderColor, primary, borderWhite } = getThemeColors(isDark);
   const { uid } = user;
-  const { username, name, bio } = userData;
+  const { username, name, bio, followers, following, posts } = userData;
 
   const getDataFromFireStore = async () => {
     await db
       .collection("posts")
       .where("uid", "==", uid)
-      // .orderBy("timestamp")
+      .orderBy("timestamp", "desc")
       .onSnapshot((querySnapshot) => {
         const data = [];
         querySnapshot.forEach((doc) => {
@@ -76,14 +77,6 @@ export default function ProfileScreen({ navigation }) {
     subHeader: {
       flexDirection: "row",
     },
-    imageContainer: {
-      width: screenWidth / 3 - 2,
-      height: 110,
-      backgroundColor: "black",
-    },
-    separator: {
-      marginTop: 2,
-    },
     oddColumn: {
       marginRight: 0,
     },
@@ -91,63 +84,35 @@ export default function ProfileScreen({ navigation }) {
       marginLeft: 1,
       marginRight: 1,
     },
-    image: {
-      flex: 1,
-      height: 150,
-      width: "100%",
-    },
-    tabsContainer: {
-      flexDirection: "row",
-      justifyContent: "space-evenly",
-      marginBottom: 5,
-    },
-    gridIcon: {
-      flexDirection: "row",
-      justifyContent: "center",
-      borderBottomWidth: 2,
-      borderBottomColor: primary,
-      flex: 1,
-      paddingVertical: 10,
-    },
-    accountIcon: {
-      flexDirection: "row",
-      justifyContent: "center",
-      flex: 1,
-      paddingVertical: 10,
-    },
     profileData: {
       flexDirection: "row",
     },
   });
 
-  const getGridStyle = (index) => {
-    if (profileData.length <= 2 && index % 2 === 0) {
-      return styles.oddColumn;
-    }
-
-    if (profileData.lenght > 2 && index % 3 === 0) {
-      return styles.oddColumn;
-    }
-
-    return styles.evenColumn;
-  };
-
   return (
     <Screen style={styles.screen}>
       <ProfileHeader username={username} colors={getThemeColors(isDark)} />
       <View style={styles.profileData}>
-        <ProfileImage />
-        <ProfileBoxContainer colors={getThemeColors(isDark)} />
+        <ProfileImage imageUrl={user.profile_pic} />
+        <ProfileBoxContainer
+          following={following}
+          followers={followers}
+          posts={posts}
+          colors={getThemeColors(isDark)}
+        />
       </View>
-      <ProfileBio colors={getThemeColors(isDark)} name={name} bio={bio} />
-      <TabsContainer styles={styles} primary={primary} />
+      <ProfileBio
+        navigation={navigation}
+        colors={getThemeColors(isDark)}
+        userData={userData}
+        name={name}
+        bio={bio}
+        isProfile
+      />
+      <ProfileTabsContainer primary={primary} borderWhite={borderWhite} />
       <ScrollView>
         {profileData.length ? (
-          <PostsList
-            profileData={profileData}
-            styles={styles}
-            getGridStyle={getGridStyle}
-          />
+          <ProfilePostList profileData={profileData} />
         ) : (
           <ActivityIndicator />
         )}
@@ -155,41 +120,3 @@ export default function ProfileScreen({ navigation }) {
     </Screen>
   );
 }
-
-const TabsContainer = ({ styles, primary }) => {
-  return (
-    <View style={styles.tabsContainer}>
-      <View style={styles.gridIcon}>
-        <MaterialCommunityIcons name="grid" size={24} color={primary} />
-      </View>
-      <View style={styles.accountIcon}>
-        <MaterialCommunityIcons
-          name="account-box-outline"
-          size={30}
-          color={primary}
-        />
-      </View>
-    </View>
-  );
-};
-
-const PostsList = ({ profileData, styles, getGridStyle }) => {
-  return (
-    <FlatList
-      data={profileData}
-      keyExtractor={(item) => item.downloadUrl}
-      ItemSeparatorComponent={() => <View style={styles.separator} />}
-      numColumns={3}
-      renderItem={({ item, index }) => {
-        const { downloadUrl } = item;
-        return (
-          <TouchableOpacity>
-            <View style={[getGridStyle(index), styles.imageContainer]}>
-              <Image source={{ uri: downloadUrl }} style={styles.image} />
-            </View>
-          </TouchableOpacity>
-        );
-      }}
-    />
-  );
-};

@@ -2,7 +2,12 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import ProfileBox from "./ProfileBox";
 
-export default function ProfileBoxContainer({ colors }) {
+export default function ProfileBoxContainer({
+  colors,
+  followers,
+  following,
+  posts,
+}) {
   const { primary } = colors;
   const styles = StyleSheet.create({
     container: {
@@ -26,9 +31,9 @@ export default function ProfileBoxContainer({ colors }) {
   });
   return (
     <View style={styles.container}>
-      <ProfileBox label="Posts" value={0} styles={styles} />
-      <ProfileBox label="Followers" value={0} styles={styles} />
-      <ProfileBox label="Following" value={0} styles={styles} />
+      <ProfileBox label="Posts" value={posts} styles={styles} />
+      <ProfileBox label="Followers" value={followers} styles={styles} />
+      <ProfileBox label="Following" value={following} styles={styles} />
     </View>
   );
 }

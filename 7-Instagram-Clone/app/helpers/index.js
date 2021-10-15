@@ -45,6 +45,7 @@ export const getThemeColors = (isDark) => {
     borderColor: isDark ? darkColors.darkGrey : lightColors.lightGrey,
     darkBlueText: isDark ? darkColors.aceBlue : lightColors.darkBlue,
     dividerColor: isDark ? darkColors.secondary : lightColors.darkGrey,
+    borderWhite: isDark ? darkColors.primary : lightColors.lightGrey,
   };
 
   return colors;
