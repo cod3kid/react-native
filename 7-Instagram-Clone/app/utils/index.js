@@ -14,12 +14,27 @@ export const languages = [
 export const bottomNavIcons = {
   homeLightActive: require("../assets/icons/home-light-active.png"),
   homeLightInactive: require("../assets/icons/home-light-inactive.png"),
+
+  homeDarkActive: require("../assets/icons/home-dark-active.png"),
+  homeDarkInactive: require("../assets/icons/home-dark-inactive.png"),
+
   searchLightActive: require("../assets/icons/search-light-active.png"),
   searchLightInactive: require("../assets/icons/search-light-inactive.png"),
+
+  searchDarkActive: require("../assets/icons/search-dark-active.png"),
+  searchDarkInactive: require("../assets/icons/search-dark-inactive.png"),
+
   reelsLightActive: require("../assets/icons/reels-light-active.png"),
   reelsLightInactive: require("../assets/icons/reels-light-inactive.png"),
+
+  reelsDarkActive: require("../assets/icons/reels-dark-active.png"),
+  reelsDarkInactive: require("../assets/icons/reels-dark-inactive.png"),
+
   heartLightActive: require("../assets/icons/heart-light-active.png"),
   heartLightInactive: require("../assets/icons/heart-light-inactive.png"),
+
+  heartDarkActive: require("../assets/icons/heart-dark-active.png"),
+  heartDarkInactive: require("../assets/icons/heart-dark-inactive.png"),
 };
 
 export const otherIcons = {
@@ -45,46 +60,48 @@ export const otherIcons = {
   bookmarkDark: require("../assets/icons/bookmark-dark.png"),
 };
 
-const settingsList = [
+export const settingsList = [
   {
-    name: "COVID-19 Safety Centre",
-    icon: "shield",
+    name: "Dark Mode",
+    icon: "theme-light-dark",
+    isDark: true,
   },
   {
-    name: "Your Favourites",
-    icon: "heart",
+    name: "Follow and Invite Friends",
+    icon: "account-plus",
   },
   {
-    name: "Restaurant Rewards",
-    icon: "star-circle",
+    name: "Notifications",
+    icon: "bell-outline",
   },
   {
-    name: "Wallet",
-    icon: "credit-card",
+    name: "Privacy",
+    icon: "lock-outline",
   },
   {
-    name: "Send a Gift",
-    icon: "gift",
+    name: "Security",
+    icon: "shield-check-outline",
   },
   {
-    name: "Business Preferences",
-    icon: "bag-checked",
+    name: "Ads",
+    icon: "google-ads",
+  },
+  {
+    name: "Account",
+    icon: "account-circle-outline",
   },
   {
     name: "Help",
     icon: "lifebuoy",
   },
   {
-    name: "Promotions",
-    icon: "tag-text",
+    name: "About",
+    icon: "information-outline",
   },
+
   {
-    name: "Eat Pass",
-    icon: "ticket-confirmation",
-  },
-  {
-    name: "Deliver with Uber",
-    icon: "basket",
+    name: "Log Out",
+    icon: "logout-variant",
   },
 ];
 export const stories = [

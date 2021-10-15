@@ -144,6 +144,7 @@ export default function LoginScreen({ navigation }) {
                 onChangeText={handleChange("name")}
                 containerColor={containerColor}
                 borderColor={borderColor}
+                primaryColor={primary}
               />
               <CustomInput
                 name="email"
@@ -152,6 +153,7 @@ export default function LoginScreen({ navigation }) {
                 onChangeText={handleChange("email")}
                 containerColor={containerColor}
                 borderColor={borderColor}
+                primaryColor={primary}
               />
               <CustomInput
                 name="username"
@@ -160,6 +162,7 @@ export default function LoginScreen({ navigation }) {
                 onChangeText={handleChange("username")}
                 containerColor={containerColor}
                 borderColor={borderColor}
+                primaryColor={primary}
               />
               <CustomInput
                 name="password"
@@ -168,6 +171,7 @@ export default function LoginScreen({ navigation }) {
                 onChangeText={handleChange("password")}
                 containerColor={containerColor}
                 borderColor={borderColor}
+                primaryColor={primary}
                 isPassword
                 showIcon
               />

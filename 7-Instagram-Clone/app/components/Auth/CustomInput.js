@@ -14,6 +14,7 @@ export default function CustomInput({
   value,
   onChangeText,
   containerColor,
+  primaryColor,
   borderColor,
   isPassword = false,
   showIcon = false,
@@ -35,6 +36,7 @@ export default function CustomInput({
       flex: 1,
       borderWidth: 0,
       fontSize: 14,
+      color: primaryColor,
     },
   });
 

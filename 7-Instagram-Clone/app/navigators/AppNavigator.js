@@ -1,7 +1,10 @@
 import React, { useEffect } from "react";
 import { Image } from "react-native";
+import { useSelector } from "react-redux";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { MaterialCommunityIcons, Foundation } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+
+import { getThemeColors, getLightIcon, getDarkIcon } from "../helpers";
 import HomeNavigator from "./HomeNavigator";
 import ReelsScreen from "../screens/AppScreens/ReelsScreen";
 import ActivityScreen from "../screens/AppScreens/ActivityScreen";
@@ -11,16 +14,9 @@ import { bottomNavIcons } from "../utils";
 
 const Tab = createBottomTabNavigator();
 const AppNavigator = () => {
-  const {
-    homeLightActive,
-    homeLightInactive,
-    searchLightActive,
-    searchLightInactive,
-    reelsLightActive,
-    reelsLightInactive,
-    heartLightActive,
-    heartLightInactive,
-  } = bottomNavIcons;
+  const isDark = useSelector((state) => state.themeReducer);
+
+  const { main, primary } = getThemeColors(isDark);
 
   return (
     <Tab.Navigator
@@ -29,6 +25,9 @@ const AppNavigator = () => {
         headerShown: false,
         showLabel: false,
         tabBarShowLabel: false,
+        tabBarStyle: {
+          backgroundColor: main,
+        },
       }}
     >
       <Tab.Screen
@@ -37,7 +36,11 @@ const AppNavigator = () => {
         options={{
           tabBarIcon: ({ color, size, focused }) => (
             <Image
-              source={focused ? homeLightActive : homeLightInactive}
+              source={
+                isDark
+                  ? getDarkIcon(focused, "home")
+                  : getLightIcon(focused, "home")
+              }
               style={{ height: 24, width: 24 }}
             />
           ),
@@ -49,7 +52,11 @@ const AppNavigator = () => {
         options={{
           tabBarIcon: ({ color, size, focused }) => (
             <Image
-              source={focused ? searchLightActive : searchLightInactive}
+              source={
+                isDark
+                  ? getDarkIcon(focused, "search")
+                  : getLightIcon(focused, "search")
+              }
               style={{ height: 24, width: 24 }}
             />
           ),
@@ -62,7 +69,11 @@ const AppNavigator = () => {
         options={{
           tabBarIcon: ({ color, size, focused }) => (
             <Image
-              source={focused ? reelsLightActive : reelsLightInactive}
+              source={
+                isDark
+                  ? getDarkIcon(focused, "reels")
+                  : getLightIcon(focused, "reels")
+              }
               style={{ height: 24, width: 24 }}
             />
           ),
@@ -75,7 +86,11 @@ const AppNavigator = () => {
         options={{
           tabBarIcon: ({ color, size, focused }) => (
             <Image
-              source={focused ? heartLightActive : heartLightInactive}
+              source={
+                isDark
+                  ? getDarkIcon(focused, "heart")
+                  : getLightIcon(focused, "heart")
+              }
               style={{ height: 24, width: 24 }}
             />
           ),
@@ -87,7 +102,11 @@ const AppNavigator = () => {
         component={ProfileNavigator}
         options={{
           tabBarIcon: ({ color, size, focused }) => (
-            <MaterialCommunityIcons name="account" color={color} size={size} />
+            <MaterialCommunityIcons
+              name="account"
+              color={primary}
+              size={size}
+            />
           ),
         }}
       />

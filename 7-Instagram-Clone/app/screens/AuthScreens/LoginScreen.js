@@ -142,6 +142,7 @@ export default function LoginScreen({ navigation }) {
           {({ handleChange, handleBlur, handleSubmit, values, isValid }) => (
             <View style={styles.formContainer}>
               <CustomInput
+                primaryColor={primary}
                 containerColor={containerColor}
                 borderColor={borderColor}
                 name="email"
@@ -150,6 +151,7 @@ export default function LoginScreen({ navigation }) {
                 onChangeText={handleChange("email")}
               />
               <CustomInput
+                primaryColor={primary}
                 containerColor={containerColor}
                 borderColor={borderColor}
                 name="password"
