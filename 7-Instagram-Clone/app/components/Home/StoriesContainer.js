@@ -7,11 +7,38 @@ import {
   StyleSheet,
   TouchableOpacity,
   ImageBackground,
+  FlatList,
+  TouchableWithoutFeedback,
 } from "react-native";
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { stories } from "../../utils";
 
-export default function StoriesContainer({ navigation }) {
+export default function StoriesContainer({ navigation, primary, borderColor }) {
+  const styles = StyleSheet.create({
+    storyContainer: {
+      alignItems: "center",
+      borderBottomWidth: 1,
+      borderBottomColor: borderColor,
+      paddingVertical: 6,
+    },
+    storyBackground: {
+      width: 75,
+      height: 75,
+      marginLeft: 12,
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    story: {
+      width: 68,
+      height: 68,
+      borderRadius: 35,
+      borderWidth: 3,
+    },
+    text: {
+      color: primary,
+      fontSize: 13,
+    },
+  });
+
   return (
     <View>
       <ScrollView horizontal showHorizontalScrollIndicator={false}>
@@ -22,56 +49,39 @@ export default function StoriesContainer({ navigation }) {
                 source={require("../../assets/images/avatar.png")}
                 style={{ height: 75, width: 75 }}
               />
-              <Text style={{ fontSize: 13 }}>Your Story</Text>
+              <Text style={{ fontSize: 13, color: primary }}>Your Story</Text>
             </View>
           </TouchableWithoutFeedback>
         </View>
-
-        {stories.map((user, index) => (
-          <View key={index} style={styles.storyContainer}>
-            <TouchableOpacity onPress={() => navigation.push("StoryScreen")}>
-              <ImageBackground
-                style={styles.storyBackground}
-                source={require("../../assets/images/story-border.png")}
-              >
-                <Image source={{ uri: user.image }} style={styles.story} />
-              </ImageBackground>
-            </TouchableOpacity>
-            <Text style={styles.text}>
-              {console.log(user.user)}
-              {user.user.length > 11
-                ? user.user.slice(0, 10).toLowerCase() + "..."
-                : user.user.toLowerCase()}
-            </Text>
-          </View>
-        ))}
+        <FlatList
+          horizontal
+          data={stories}
+          keyExtractor={(item) => item.user.toString()}
+          ItemSeparatorComponent={() => <View style={styles.separator} />}
+          renderItem={({ item, index }) => {
+            return (
+              <View key={index} style={styles.storyContainer}>
+                <TouchableOpacity
+                  onPress={() => navigation.push("StoryScreen")}
+                >
+                  <ImageBackground
+                    style={styles.storyBackground}
+                    source={require("../../assets/images/story-border.png")}
+                  >
+                    <Image source={{ uri: item.image }} style={styles.story} />
+                  </ImageBackground>
+                </TouchableOpacity>
+                <Text style={styles.text}>
+                  {console.log(item.user)}
+                  {item.user.length > 11
+                    ? item.user.slice(0, 10).toLowerCase() + "..."
+                    : item.user.toLowerCase()}
+                </Text>
+              </View>
+            );
+          }}
+        />
       </ScrollView>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  storyContainer: {
-    alignItems: "center",
-    borderBottomWidth: 1,
-    borderBottomColor: "grey",
-    paddingVertical: 6,
-  },
-  storyBackground: {
-    width: 75,
-    height: 75,
-    marginLeft: 12,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  story: {
-    width: 68,
-    height: 68,
-    borderRadius: 35,
-    borderWidth: 3,
-  },
-  text: {
-    color: "black",
-    fontSize: 13,
-  },
-});

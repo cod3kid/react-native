@@ -13,6 +13,7 @@ import Screen from "../../components/Common/Screen";
 import { TouchableWithoutFeedback } from "react-native";
 import { TextInput } from "react-native";
 import AuthLoader from "../../components/Auth/AuthLoader";
+import { getThemeColors } from "../../helpers";
 
 const storage = firebase.storage();
 const db = firebase.firestore();
@@ -23,7 +24,7 @@ export default function AddPostScreen({ route }) {
   const isDark = useSelector((state) => state.themeReducer);
   const [image, setImage] = useState(null);
   const [isUploading, setUploading] = useState(false);
-  const main = isDark ? darkColors.main : lightColors.main;
+  const { main } = getThemeColors(isDark);
 
   const requestPermission = async () => {
     const { granted } = await ImagePicker.requestMediaLibraryPermissionsAsync();

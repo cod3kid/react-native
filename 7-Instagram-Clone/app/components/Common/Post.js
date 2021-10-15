@@ -18,7 +18,7 @@ import firebase from "../../config/firebase";
 import { otherIcons } from "../../utils/index";
 
 const db = firebase.firestore();
-export default function Post({ post }) {
+export default function Post({ post, colors }) {
   const {
     likeLightActive,
     likeLightInactive,
@@ -26,119 +26,81 @@ export default function Post({ post }) {
     shareLight,
     bookmarkLight,
   } = otherIcons;
-  //   const handleLike = () => {
-  //     const currentLikeStatus = !post.likes_by_users.includes(
-  //       firebase.auth().currentUser.email
-  //     );
-  //     db.collection("users")
-  //       .doc(post.owner_email)
-  //       .collection("posts")
-  //       .doc(post.id)
-  //       .update({
-  //         likes_by_users: currentLikeStatus
-  //           ? firebase.firestore.FieldValue.arrayUnion(
-  //               firebase.auth().currentUser.email
-  //             )
-  //           : firebase.firestore.FieldValue.arrayRemove(
-  //               firebase.auth().currentUser.email
-  //             ),
-  //       })
-  //       .then(() => {
-  //         console.log("doc updated");
-  //       })
-  //       .catch((err) => {
-  //         console.error("Error updating doc: ", err);
-  //       });
-  //   };
-  //* I tried for getting the time but it was in nanosecs and secs. Forgive me
-  //   const getTimestamp = () => {
-  //     db.collection("users")
-  //       .doc(post.owner_email)
-  //       .collection("posts")
-  //       .get()
-  //       .then((querySnapshot) => {
-  //         querySnapshot.forEach((doc) => {
-  //           setTime({ id: doc.id, ...doc.data() });
-  //           console.log({ id: doc.id, ...doc.data() });
-  //         });
-  //       })
-  //       .then(() => {
-  //         Alert.alert(
-  //           "Time Sent",
-  //           "Nanoseconds => ",
-  //           time.createdAt.nanoseconds,
-  //           "Seconds => ",
-  //           time.createdAt.seconds
-  //         );
-  //       });
-  //   };
+  const { primary } = colors;
+
+  const styles = StyleSheet.create({
+    postContainer: {
+      marginBottom: 6,
+    },
+    postHeaderContainer: {
+      paddingVertical: 9,
+      paddingHorizontal: 10,
+      justifyContent: "space-between",
+      alignItems: "center",
+      flexDirection: "row",
+    },
+    postHeaderProfile: {
+      flexDirection: "row",
+      alignItems: "center",
+    },
+    postHeaderDisplayPic: {
+      height: 33,
+      width: 33,
+      borderRadius: 20,
+    },
+    actionContainerStyle: {
+      padding: 10,
+      paddingBottom: 5,
+      flexDirection: "row",
+      justifyContent: "space-between",
+    },
+    captionContainerStyle: {
+      marginHorizontal: 10,
+      flexDirection: "row",
+    },
+    postHeaderUsername: {
+      marginLeft: 10,
+      fontSize: 14,
+      fontWeight: "bold",
+      color: primary,
+    },
+    media: {
+      height: 350,
+      width: "100%",
+    },
+    captionUsername: {
+      fontWeight: "bold",
+      paddingRight: 5,
+      color: primary,
+    },
+    actionMain: {
+      flexDirection: "row",
+    },
+    bold: {
+      fontWeight: "bold",
+      paddingHorizontal: 10,
+      color: primary,
+    },
+    actionIconStyle: {
+      marginRight: 10,
+    },
+    captionText: {
+      color: primary,
+    },
+  });
+
   return (
     <View style={styles.postContainer}>
-      <PostHeader post={post} />
-      <MediaContainer imageUrl={post.imageUrl} />
-      <ActionIconsContainer />
-      <LikesContainer />
-      <CaptionContainer post={post} />
+      <PostHeader post={post} styles={styles} primary={primary} />
+      <MediaContainer imageUrl={post.imageUrl} styles={styles} />
+      <ActionIconsContainer styles={styles} primary={primary} />
+      <LikesContainer styles={styles} />
+      <CaptionContainer post={post} styles={styles} />
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  postContainer: {
-    marginBottom: 6,
-  },
-  postHeaderContainer: {
-    paddingVertical: 7,
-    paddingHorizontal: 10,
-    justifyContent: "space-between",
-    alignItems: "center",
-    flexDirection: "row",
-  },
-  postHeaderProfile: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  postHeaderDisplayPic: {
-    height: 30,
-    width: 30,
-    borderRadius: 15,
-  },
-  actionContainerStyle: {
-    padding: 10,
-    paddingBottom: 5,
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  captionContainerStyle: {
-    marginHorizontal: 10,
-    flexDirection: "row",
-  },
-  postHeaderUsername: {
-    marginLeft: 10,
-    fontSize: 14,
-    fontWeight: "bold",
-  },
-  media: {
-    height: 350,
-    width: "100%",
-  },
-  captionUsername: {
-    fontWeight: "bold",
-    paddingRight: 5,
-  },
-  actionMain: {
-    flexDirection: "row",
-  },
-  bold: {
-    fontWeight: "bold",
-    paddingHorizontal: 10,
-  },
-  actionIconStyle: {
-    marginRight: 10,
-  },
-});
-
-const PostHeader = ({ post }) => {
+const PostHeader = ({ post, styles, primary }) => {
   const { user } = post;
   return (
     <View style={styles.postHeaderContainer}>
@@ -149,11 +111,11 @@ const PostHeader = ({ post }) => {
         />
         <Text style={styles.postHeaderUsername}>{user}</Text>
       </View>
-      <MaterialCommunityIcons name="dots-vertical" size={20} color="black" />
+      <MaterialCommunityIcons name="dots-vertical" size={20} color={primary} />
     </View>
   );
 };
-const MediaContainer = ({ imageUrl }) => {
+const MediaContainer = ({ imageUrl, styles }) => {
   return (
     <View>
       <Image
@@ -165,7 +127,7 @@ const MediaContainer = ({ imageUrl }) => {
     </View>
   );
 };
-const LikesContainer = () => {
+const LikesContainer = ({ styles }) => {
   return (
     <View style={styles.actionMain}>
       <Text style={styles.bold}>132 likes</Text>
@@ -173,18 +135,18 @@ const LikesContainer = () => {
   );
 };
 
-const CaptionContainer = ({ post }) => {
+const CaptionContainer = ({ post, styles }) => {
   const { user, caption } = post;
   return (
     <View style={styles.captionContainerStyle}>
       <Text>
         <Text style={styles.captionUsername}>{user} </Text>{" "}
-        <Text>{caption}</Text>
+        <Text style={styles.captionText}>{caption}</Text>
       </Text>
     </View>
   );
 };
-const ActionIcon = ({ children }) => {
+const ActionIcon = ({ children, styles }) => {
   return (
     <TouchableWithoutFeedback>
       <View style={styles.actionIconStyle}>{children}</View>
@@ -192,22 +154,22 @@ const ActionIcon = ({ children }) => {
   );
 };
 
-const ActionIconsContainer = () => {
+const ActionIconsContainer = ({ styles, primary }) => {
   return (
     <View style={styles.actionContainerStyle}>
       <View style={styles.actionMain}>
-        <ActionIcon>
-          <Ionicons name="ios-heart-outline" size={28} color="black" />
+        <ActionIcon styles={styles}>
+          <Ionicons name="ios-heart-outline" size={28} color={primary} />
         </ActionIcon>
-        <ActionIcon>
-          <Ionicons name="chatbubble-outline" size={26} color="black" />
+        <ActionIcon styles={styles}>
+          <Ionicons name="chatbubble-outline" size={26} color={primary} />
         </ActionIcon>
-        <ActionIcon>
-          <Ionicons name="ios-paper-plane-outline" size={26} color="black" />
+        <ActionIcon styles={styles}>
+          <Ionicons name="ios-paper-plane-outline" size={26} color={primary} />
         </ActionIcon>
       </View>
-      <ActionIcon>
-        <Ionicons name="ios-bookmark-outline" size={26} color="black" />
+      <ActionIcon styles={styles}>
+        <Ionicons name="ios-bookmark-outline" size={26} color={primary} />
       </ActionIcon>
     </View>
   );
