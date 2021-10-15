@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import { MaterialCommunityIcons, FontAwesome } from "@expo/vector-icons";
 import InstagramText from "../../components/Common/InstagramText";
+import Instagram from "../../assets/images/instagram-text.svg";
 
 export default function HomeHeader({
   userData,
@@ -15,13 +16,17 @@ export default function HomeHeader({
       justifyContent: "space-between",
       alignItems: "center",
       paddingHorizontal: 15,
-      paddingVertical: 10,
+      paddingVertical: 15,
     },
   });
   return (
     <View style={styles.header}>
-      <View style={{ alignItems: "center" }}>
-        <InstagramText fontSize={38} marginLeft={0} />
+      <View style={{ alignItems: "flex-start" }}>
+        <Instagram
+          width={140}
+          height={35}
+          style={{ color: "blue", fill: "blue" }}
+        />
       </View>
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <TouchableWithoutFeedback onPress={onPressAddIcon}>

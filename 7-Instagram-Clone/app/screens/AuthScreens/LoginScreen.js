@@ -114,15 +114,7 @@ export default function LoginScreen({ navigation }) {
     await auth
       .signInWithEmailAndPassword(email, password)
       .then((res) => {
-        // const docRef = db.collection("users").doc(res.user.uid);
-        // return docRef.get().then(async (doc) => {
-        //   if (doc.exists) {
-        //     const userData = doc.data();
-        //     await storeUserData(userData);
-        //     setUser(userData);
-        //   }
         setLoaderVisible(false);
-        // });
       })
       .catch((error) => {
         console.log(error);

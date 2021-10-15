@@ -7,19 +7,19 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
+  ActivityIndicator,
+  ScrollView,
 } from "react-native";
 import { useSelector } from "react-redux";
-import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-import AuthContext from "../../helpers/context";
 import Screen from "../../components/Common/Screen";
 import firebase from "../../config/firebase";
-import { darkColors, lightColors } from "../../utils/colors";
-import ProfileBox from "../../components/Common/ProfileBox";
+import { getThemeColors } from "../../helpers";
 import ProfileBio from "../../components/Profile/ProfileBio";
 import ProfileBoxContainer from "../../components/Common/ProfileBoxContainer";
 import ProfileHeader from "../../components/Profile/ProfileHeader";
-import { ActivityIndicator } from "react-native";
+import ProfileImage from "../../components/Common/ProfileImage";
 
 const db = firebase.firestore();
 const screenWidth = Dimensions.get("window").width;
@@ -27,16 +27,18 @@ const screenWidth = Dimensions.get("window").width;
 export default function ProfileScreen({ navigation }) {
   const isDark = useSelector((state) => state.themeReducer);
   const user = useSelector((state) => state.userReducer);
-
   const [profileData, setProfileData] = useState([]);
+  const [userData, setUserData] = useState({});
   const [loading, setLoading] = useState(false);
-
-  const main = isDark ? darkColors.main : lightColors.main;
+  const { main, borderColor, primary } = getThemeColors(isDark);
+  const { uid } = user;
+  const { username, name, bio } = userData;
 
   const getDataFromFireStore = async () => {
     await db
       .collection("posts")
-      .where("uid", "==", "tfrmpHjmrJVH5AUgEFxFgDjVavc2")
+      .where("uid", "==", uid)
+      // .orderBy("timestamp")
       .onSnapshot((querySnapshot) => {
         const data = [];
         querySnapshot.forEach((doc) => {
@@ -44,12 +46,17 @@ export default function ProfileScreen({ navigation }) {
         });
         setProfileData([...data]);
       });
+
+    await db
+      .collection("users")
+      .doc(uid)
+      .onSnapshot((doc) => {
+        setUserData(doc.data());
+      });
   };
 
   useEffect(() => {
     getDataFromFireStore();
-    console.log(user.email);
-
     return () => {
       getDataFromFireStore();
     };
@@ -72,66 +79,117 @@ export default function ProfileScreen({ navigation }) {
     imageContainer: {
       width: screenWidth / 3 - 2,
       height: 110,
-      marginTop: 10,
       backgroundColor: "black",
+    },
+    separator: {
+      marginTop: 2,
     },
     oddColumn: {
       marginRight: 0,
     },
     evenColumn: {
-      marginLeft: 3,
-      marginRight: 3,
+      marginLeft: 1,
+      marginRight: 1,
     },
     image: {
       flex: 1,
       height: 150,
       width: "100%",
-      opacity: 0.5,
+    },
+    tabsContainer: {
+      flexDirection: "row",
+      justifyContent: "space-evenly",
+      marginBottom: 5,
+    },
+    gridIcon: {
+      flexDirection: "row",
+      justifyContent: "center",
+      borderBottomWidth: 2,
+      borderBottomColor: primary,
+      flex: 1,
+      paddingVertical: 10,
+    },
+    accountIcon: {
+      flexDirection: "row",
+      justifyContent: "center",
+      flex: 1,
+      paddingVertical: 10,
+    },
+    profileData: {
+      flexDirection: "row",
     },
   });
 
+  const getGridStyle = (index) => {
+    if (profileData.length <= 2 && index % 2 === 0) {
+      return styles.oddColumn;
+    }
+
+    if (profileData.lenght > 2 && index % 3 === 0) {
+      return styles.oddColumn;
+    }
+
+    return styles.evenColumn;
+  };
+
   return (
     <Screen style={styles.screen}>
-      <ProfileHeader />
-      {/* Profile Details */}
-      <View style={{ flexDirection: "row" }}>
-        <View style={{ paddingHorizontal: 10 }}>
-          <MaterialCommunityIcons
-            name="account-circle"
-            size={100}
-            color="grey"
-          />
-        </View>
-        <ProfileBoxContainer />
+      <ProfileHeader username={username} colors={getThemeColors(isDark)} />
+      <View style={styles.profileData}>
+        <ProfileImage />
+        <ProfileBoxContainer colors={getThemeColors(isDark)} />
       </View>
-      <ProfileBio name="Muhamed Sufail" bio="Random bio ..." />
-      <View>
-        {profileData && profileData.length ? (
-          <FlatList
-            data={profileData}
-            keyExtractor={(item) => item.downloadUrl}
-            ItemSeparatorComponent={() => <View style={styles.separator} />}
-            numColumns={3}
-            renderItem={({ item, index }) => {
-              const { downloadUrl } = item;
-              return (
-                <TouchableOpacity>
-                  <View
-                    style={[
-                      index % 2 == 0 ? styles.oddColumn : styles.evenColumn,
-                      styles.imageContainer,
-                    ]}
-                  >
-                    <Image source={{ uri: downloadUrl }} style={styles.image} />
-                  </View>
-                </TouchableOpacity>
-              );
-            }}
+      <ProfileBio colors={getThemeColors(isDark)} name={name} bio={bio} />
+      <TabsContainer styles={styles} primary={primary} />
+      <ScrollView>
+        {profileData.length ? (
+          <PostsList
+            profileData={profileData}
+            styles={styles}
+            getGridStyle={getGridStyle}
           />
         ) : (
           <ActivityIndicator />
         )}
-      </View>
+      </ScrollView>
     </Screen>
   );
 }
+
+const TabsContainer = ({ styles, primary }) => {
+  return (
+    <View style={styles.tabsContainer}>
+      <View style={styles.gridIcon}>
+        <MaterialCommunityIcons name="grid" size={24} color={primary} />
+      </View>
+      <View style={styles.accountIcon}>
+        <MaterialCommunityIcons
+          name="account-box-outline"
+          size={30}
+          color={primary}
+        />
+      </View>
+    </View>
+  );
+};
+
+const PostsList = ({ profileData, styles, getGridStyle }) => {
+  return (
+    <FlatList
+      data={profileData}
+      keyExtractor={(item) => item.downloadUrl}
+      ItemSeparatorComponent={() => <View style={styles.separator} />}
+      numColumns={3}
+      renderItem={({ item, index }) => {
+        const { downloadUrl } = item;
+        return (
+          <TouchableOpacity>
+            <View style={[getGridStyle(index), styles.imageContainer]}>
+              <Image source={{ uri: downloadUrl }} style={styles.image} />
+            </View>
+          </TouchableOpacity>
+        );
+      }}
+    />
+  );
+};

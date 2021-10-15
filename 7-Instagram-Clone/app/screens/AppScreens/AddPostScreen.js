@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/core";
 import { View, Text, StyleSheet, Image } from "react-native";
@@ -12,7 +12,6 @@ import { darkColors, lightColors } from "../../utils/colors";
 import Screen from "../../components/Common/Screen";
 import { TouchableWithoutFeedback } from "react-native";
 import { TextInput } from "react-native";
-import AuthContext from "../../helpers/context";
 import AuthLoader from "../../components/Auth/AuthLoader";
 
 const storage = firebase.storage();
@@ -39,7 +38,6 @@ export default function AddPostScreen({ route }) {
     });
 
     if (!result.cancelled) {
-      console.log(result);
       setImage(result.uri);
     }
   };
@@ -70,15 +68,20 @@ export default function AddPostScreen({ route }) {
 
       console.warn(user.uid);
 
-      return await db.collection("posts").add({
-        uid: "tfrmpHjmrJVH5AUgEFxFgDjVavc2",
-        downloadUrl,
-        comments: [],
-        likes: [],
-        caption: "Blah",
-      });
+      try {
+        await db.collection("posts").add({
+          uid: user.uid,
+          downloadUrl,
+          comments: [],
+          likes: [],
+          caption: "Blah",
+          timestamp: Date.now(),
+        });
+      } catch (ex) {
+        console.log("Erro", ex);
+      }
     } catch (ex) {
-      console.log("Erro", ex);
+      console.log(ex);
     }
 
     setUploading(false);
@@ -150,6 +153,7 @@ export default function AddPostScreen({ route }) {
         />
       </View>
       <AuthLoader
+        loaderColor="black"
         isModalVisible={isUploading}
         setModalVisible={setUploading}
         title="Uploading..."

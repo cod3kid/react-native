@@ -20,13 +20,6 @@ export default function App() {
     return (i18n.locale = lang);
   };
 
-  // const restoreUser = async () => {
-  //   const user = await getUserData();
-  //   if (user) {
-  //     setUser(user);
-  //   }
-  // };
-
   const preloadingRituals = () => {
     getOrSetCurrentLanguage();
   };

@@ -95,6 +95,7 @@ export default function LoginScreen({ navigation }) {
           .doc(res.user.uid)
           .set({
             uid: res.user.uid,
+            name,
             username,
             email,
             account_type: "public",

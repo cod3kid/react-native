@@ -3,15 +3,25 @@ import { Image } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialCommunityIcons, Foundation } from "@expo/vector-icons";
 import HomeNavigator from "./HomeNavigator";
-import SettingsScreen from "../screens/AppScreens/SettingsScreen";
-import SearchScreen from "../screens/AppScreens/SearchScreen";
 import ReelsScreen from "../screens/AppScreens/ReelsScreen";
 import ActivityScreen from "../screens/AppScreens/ActivityScreen";
-import ProfileScreen from "../screens/AppScreens/ProfileScreen";
+import SearchNavigator from "./SearchNavigator";
+import ProfileNavigator from "./ProfileNavigator";
+import { bottomNavIcons } from "../utils";
 
 const Tab = createBottomTabNavigator();
-
 const AppNavigator = () => {
+  const {
+    homeLightActive,
+    homeLightInactive,
+    searchLightActive,
+    searchLightInactive,
+    reelsLightActive,
+    reelsLightInactive,
+    heartLightActive,
+    heartLightInactive,
+  } = bottomNavIcons;
+
   return (
     <Tab.Navigator
       screenOptions={{
@@ -25,17 +35,23 @@ const AppNavigator = () => {
         name="Home"
         component={HomeNavigator}
         options={{
-          tabBarIcon: ({ color, size }) => (
-            <Foundation name="home" size={size} color={color} />
+          tabBarIcon: ({ color, size, focused }) => (
+            <Image
+              source={focused ? homeLightActive : homeLightInactive}
+              style={{ height: 24, width: 24 }}
+            />
           ),
         }}
       />
       <Tab.Screen
-        name="Search"
-        component={SearchScreen}
+        name="SearchNav"
+        component={SearchNavigator}
         options={{
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="magnify" size={size} color={color} />
+          tabBarIcon: ({ color, size, focused }) => (
+            <Image
+              source={focused ? searchLightActive : searchLightInactive}
+              style={{ height: 24, width: 24 }}
+            />
           ),
         }}
       />
@@ -46,9 +62,7 @@ const AppNavigator = () => {
         options={{
           tabBarIcon: ({ color, size, focused }) => (
             <Image
-              source={{
-                uri: "https://img.icons8.com/ios-filled/50/000000/instagram-reel.png",
-              }}
+              source={focused ? reelsLightActive : reelsLightInactive}
               style={{ height: 24, width: 24 }}
             />
           ),
@@ -59,17 +73,20 @@ const AppNavigator = () => {
         name="Activity"
         component={ActivityScreen}
         options={{
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="heart" size={size} color={color} />
+          tabBarIcon: ({ color, size, focused }) => (
+            <Image
+              source={focused ? heartLightActive : heartLightInactive}
+              style={{ height: 24, width: 24 }}
+            />
           ),
         }}
       />
 
       <Tab.Screen
-        name="Settings"
-        component={ProfileScreen}
+        name="Profile"
+        component={ProfileNavigator}
         options={{
-          tabBarIcon: ({ color, size }) => (
+          tabBarIcon: ({ color, size, focused }) => (
             <MaterialCommunityIcons name="account" color={color} size={size} />
           ),
         }}

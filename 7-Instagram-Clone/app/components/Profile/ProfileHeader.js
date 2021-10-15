@@ -5,8 +5,9 @@ import { useNavigation } from "@react-navigation/core";
 
 import { TouchableWithoutFeedback } from "react-native";
 
-export default function ProfileHeader() {
+export default function ProfileHeader({ username, colors }) {
   const navigation = useNavigation();
+  const { main, primary } = colors;
   const styles = StyleSheet.create({
     header: {
       flexDirection: "row",
@@ -21,18 +22,18 @@ export default function ProfileHeader() {
       fontSize: 18,
       fontWeight: "bold",
       paddingHorizontal: 8,
+      color: primary,
     },
   });
 
   return (
     <View style={styles.header}>
       <View style={styles.subHeader}>
-        <Text style={styles.username}>muhamed.sufail</Text>
-        <MaterialCommunityIcons name="chevron-down" size={24} color="black" />
+        <Text style={styles.username}>{username}</Text>
+        <MaterialCommunityIcons name="chevron-down" size={24} color={primary} />
       </View>
-
       <TouchableWithoutFeedback onPress={() => navigation.navigate("Settings")}>
-        <Feather name="menu" size={24} color="black" />
+        <Feather name="menu" size={24} color={primary} />
       </TouchableWithoutFeedback>
     </View>
   );

@@ -1,11 +1,11 @@
 import React from "react";
 import { View, Text } from "react-native";
 
-export default function ProfileBox({ label, value }) {
+export default function ProfileBox({ label, value, styles }) {
   return (
-    <View style={{ alignItems: "center" }}>
-      <Text style={{ fontWeight: "bold", fontSize: 20 }}>{value}</Text>
-      <Text>{label}</Text>
+    <View style={styles.dataContainer}>
+      <Text style={styles.dataValue}>{value}</Text>
+      <Text style={styles.dataLabel}>{label}</Text>
     </View>
   );
 }
