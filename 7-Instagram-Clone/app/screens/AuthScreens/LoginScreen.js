@@ -7,6 +7,8 @@ import { useSelector, useDispatch } from "react-redux";
 
 import firebase from "../../config/firebase";
 import t from "../../utils/translations";
+import { getThemeColors } from "../../helpers";
+import environmentVariable from "../../config/env";
 import { darkColors, lightColors } from "../../utils/colors";
 import Screen from "../../components/Common/Screen";
 import CustomInput from "../../components/Auth/CustomInput";
@@ -17,7 +19,6 @@ import InstagramText from "../../components/Common/InstagramText";
 import FBLoginButton from "../../components/Auth/FBLoginButton";
 import Footer from "../../components/Auth/Footer";
 import OrContainer from "../../components/Auth/OrContainer";
-import AuthLoader from "../../components/Auth/AuthLoader";
 import Alert from "../../components/Common/Alert";
 
 const auth = firebase.auth();
@@ -27,15 +28,17 @@ export default function LoginScreen({ navigation }) {
   const [isModalVisible, setModalVisible] = useState(false);
   const [isLoaderVisible, setLoaderVisible] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
+  const dispatch = useDispatch();
   const [alertMessage, setAlertMessage] = useState(null);
-
-  const main = isDark ? darkColors.main : lightColors.main;
-  const primary = isDark ? darkColors.primary : lightColors.primary;
-  const blue = isDark ? darkColors.lightBlue : lightColors.mediumBlue;
-  const containerColor = isDark ? darkColors.darkGrey : lightColors.offWhite;
-  const borderColor = isDark ? darkColors.darkGrey : lightColors.lightGrey;
-  const darkBlueText = isDark ? darkColors.aceBlue : lightColors.darkBlue;
-  const dividerColor = isDark ? darkColors.secondary : lightColors.darkGrey;
+  const {
+    main,
+    primary,
+    dividerColor,
+    darkBlueText,
+    blue,
+    containerColor,
+    borderColor,
+  } = getThemeColors(isDark);
 
   const styles = StyleSheet.create({
     screen: {
@@ -84,7 +87,7 @@ export default function LoginScreen({ navigation }) {
 
   const handleFacebookLogin = async () => {
     try {
-      await Facebook.initializeAsync(process.env.FACEBOOK_APP_ID); // enter your Facebook App Id
+      await Facebook.initializeAsync(environmentVariable.FACEBOOK_APP_ID);
       const { type, token } = await Facebook.logInWithReadPermissionsAsync({
         permissions: ["public_profile", "email"],
       });
@@ -95,7 +98,15 @@ export default function LoginScreen({ navigation }) {
           .signInWithCredential(credential)
           .then((user) => {
             // All the details about user are in here returned from firebase
+            dispatch({
+              type: "SET_USER_DATA",
+              payload: {
+                user: user.uid,
+              },
+            });
+
             console.log("Logged in successfully", user);
+            return;
           })
           .catch((error) => {
             console.log("Error occurred ", error);
@@ -162,8 +173,10 @@ export default function LoginScreen({ navigation }) {
                 showIcon
               />
               <CustomButton
+                isLoaderVisible={isLoaderVisible}
                 isValid={isValid}
                 color={blue}
+                primary={primary}
                 inValidColor={
                   isDark ? darkColors.mediumBlue : lightColors.lightBlue
                 }
@@ -196,12 +209,6 @@ export default function LoginScreen({ navigation }) {
       <LanguageModal
         isModalVisible={isModalVisible}
         setModalVisible={setModalVisible}
-      />
-      <AuthLoader
-        loaderColor={primary}
-        isModalVisible={isLoaderVisible}
-        setModalVisible={setLoaderVisible}
-        title="Logging In..."
       />
       <Alert
         isModalVisible={showAlert}

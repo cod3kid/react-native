@@ -9,8 +9,15 @@ export default function Alert({ isModalVisible, setModalVisible, message }) {
       onBackdropPress={() => setModalVisible(false)}
       overlayStyle={styles.overlayStyle}
     >
-      <View style={{ alignItems: "center", padding: 5 }}>
-        <Text style={{ fontWeight: "bold" }}>{message}</Text>
+      <View
+        style={{
+          alignItems: "center",
+          padding: 5,
+          justifyContent: "center",
+          flexDirection: "row",
+        }}
+      >
+        <Text style={{ fontWeight: "bold", fontSize: 16 }}>{message}</Text>
       </View>
     </Overlay>
   );
@@ -20,6 +27,7 @@ const styles = StyleSheet.create({
   overlayStyle: {
     height: 50,
     margin: 20,
+    borderRadius: 8,
     paddingVertical: 10,
     paddingHorizontal: 20,
   },

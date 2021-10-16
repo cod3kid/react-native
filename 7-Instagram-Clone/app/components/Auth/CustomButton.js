@@ -1,5 +1,11 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
 
 export default function CustomButton({
   title,
@@ -7,6 +13,7 @@ export default function CustomButton({
   color,
   isValid,
   inValidColor,
+  isLoaderVisible,
 }) {
   const styles = StyleSheet.create({
     parent: {
@@ -29,7 +36,11 @@ export default function CustomButton({
   return (
     <TouchableOpacity onPress={(e) => (isValid ? onPress(e) : null)}>
       <View style={styles.parent}>
-        <Text style={styles.textStyle}>{title}</Text>
+        {isLoaderVisible ? (
+          <ActivityIndicator size="small" color="#FFFFFF" />
+        ) : (
+          <Text style={styles.textStyle}>{title}</Text>
+        )}
       </View>
     </TouchableOpacity>
   );

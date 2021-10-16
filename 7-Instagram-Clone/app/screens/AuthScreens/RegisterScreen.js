@@ -89,7 +89,6 @@ export default function LoginScreen({ navigation }) {
     await auth
       .createUserWithEmailAndPassword(email, password)
       .then(async (res) => {
-        console.log(res);
         return db
           .collection("users")
           .doc(res.user.uid)
@@ -99,13 +98,12 @@ export default function LoginScreen({ navigation }) {
             username,
             email,
             account_type: "public",
-            followers: 0,
-            following: 0,
-            posts: 0,
+            followers: [],
+            following: [],
+            posts: [],
             bio: "",
           })
           .then((res) => {
-            res.log("data user", res);
             setLoaderVisible(false);
             setAlertMessage("Account Created");
             setShowAlert(true);
@@ -115,7 +113,6 @@ export default function LoginScreen({ navigation }) {
       .catch((err) => {
         console.log("err", err);
         setLoaderVisible(false);
-        setAlertMessage("Email Already Registered");
         setShowAlert(true);
         return;
       });
@@ -176,6 +173,7 @@ export default function LoginScreen({ navigation }) {
                 showIcon
               />
               <CustomButton
+                isLoaderVisible={isLoaderVisible}
                 isValid={isValid}
                 color={blue}
                 inValidColor={
@@ -198,12 +196,6 @@ export default function LoginScreen({ navigation }) {
       <LanguageModal
         isModalVisible={isModalVisible}
         setModalVisible={setModalVisible}
-      />
-      <AuthLoader
-        loaderColor={primary}
-        isModalVisible={isLoaderVisible}
-        setModalVisible={setLoaderVisible}
-        title="Creating Account..."
       />
       <Alert
         isModalVisible={showAlert}
