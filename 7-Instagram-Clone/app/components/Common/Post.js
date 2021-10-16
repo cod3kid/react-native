@@ -4,22 +4,21 @@ import {
   Text,
   Image,
   StyleSheet,
-  TouchableOpacity,
   TouchableWithoutFeedback,
-  Alert,
 } from "react-native";
-import {
-  MaterialCommunityIcons,
-  Ionicons,
-  FontAwesome5,
-} from "@expo/vector-icons";
+import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
+import { useSelector } from "react-redux";
 import { find, get } from "lodash";
+import firebaseMain from "firebase";
+import { useNavigation } from "@react-navigation/core";
 
 import firebase from "../../config/firebase";
 import { otherIcons } from "../../utils/index";
 
 const db = firebase.firestore();
 export default function Post({ post, colors, otherProfiles }) {
+  const navigation = useNavigation();
+  const user = useSelector((state) => state.userReducer);
   const { primary } = colors;
   console.log(post);
   const styles = StyleSheet.create({
@@ -83,6 +82,16 @@ export default function Post({ post, colors, otherProfiles }) {
     },
   });
 
+  const handleLike = async () => {
+    const docRef = await db.collection("posts").doc(post.uid);
+    docRef.update({
+      posts: firebaseMain.firestore.FieldValue.arrayUnion({
+        username: user.username,
+        uid: user.uid,
+      }),
+    });
+  };
+
   return (
     <View style={styles.postContainer}>
       <PostHeader
@@ -92,8 +101,17 @@ export default function Post({ post, colors, otherProfiles }) {
         primary={primary}
       />
       <MediaContainer imageUrl={post.downloadUrl} styles={styles} />
-      <ActionIconsContainer styles={styles} primary={primary} />
-      <LikesContainer post={post} styles={styles} />
+      <ActionIconsContainer
+        styles={styles}
+        primary={primary}
+        onPressLike={() => handleLike()}
+        onPressComment={() => {
+          navigation.navigate("Comments", { post: post });
+        }}
+      />
+      {get(post, "likes.length") > 0 ? (
+        <LikesContainer post={post} styles={styles} />
+      ) : null}
       <CaptionContainer post={post} styles={styles} />
     </View>
   );
@@ -132,32 +150,37 @@ const LikesContainer = ({ styles, post }) => {
 };
 
 const CaptionContainer = ({ post, styles }) => {
-  const { user, caption } = post;
+  const { username, caption } = post;
   return (
     <View style={styles.captionContainerStyle}>
       <Text>
-        <Text style={styles.captionUsername}>{user} </Text>{" "}
+        <Text style={styles.captionUsername}>{username} </Text>{" "}
         <Text style={styles.captionText}>{caption}</Text>
       </Text>
     </View>
   );
 };
-const ActionIcon = ({ children, styles }) => {
+const ActionIcon = ({ children, styles, onPress }) => {
   return (
-    <TouchableWithoutFeedback>
+    <TouchableWithoutFeedback onPress={onPress}>
       <View style={styles.actionIconStyle}>{children}</View>
     </TouchableWithoutFeedback>
   );
 };
 
-const ActionIconsContainer = ({ styles, primary }) => {
+const ActionIconsContainer = ({
+  styles,
+  primary,
+  onPressLike,
+  onPressComment,
+}) => {
   return (
     <View style={styles.actionContainerStyle}>
       <View style={styles.actionMain}>
-        <ActionIcon styles={styles}>
+        <ActionIcon styles={styles} onPress={onPressLike}>
           <Ionicons name="ios-heart-outline" size={28} color={primary} />
         </ActionIcon>
-        <ActionIcon styles={styles}>
+        <ActionIcon styles={styles} onPress={onPressComment}>
           <Ionicons name="chatbubble-outline" size={26} color={primary} />
         </ActionIcon>
         <ActionIcon styles={styles}>

@@ -49,7 +49,7 @@ export default function StoriesContainer({
       marginLeft: 5,
     },
   });
-  console.log(currentUserData);
+
   return (
     <View>
       <ScrollView horizontal showHorizontalScrollIndicator={false}>

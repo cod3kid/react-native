@@ -66,7 +66,7 @@ export default function HomeScreen({ navigation }) {
           .onSnapshot(async (querySnapshot) => {
             const data = [];
             querySnapshot.forEach((doc) => {
-              data.push(doc.data());
+              data.push({ id: doc.id, ...doc.data() });
             });
             setFollowingPosts([...data]);
           });
