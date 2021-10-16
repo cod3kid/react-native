@@ -12,7 +12,12 @@ import {
 } from "react-native";
 import { stories } from "../../utils";
 
-export default function StoriesContainer({ navigation, primary, borderColor }) {
+export default function StoriesContainer({
+  navigation,
+  primary,
+  borderColor,
+  currentUserData,
+}) {
   const styles = StyleSheet.create({
     storyContainer: {
       alignItems: "center",
@@ -37,18 +42,31 @@ export default function StoriesContainer({ navigation, primary, borderColor }) {
       color: primary,
       fontSize: 13,
     },
+    realProfilePic: {
+      height: 75,
+      width: 75,
+      borderRadius: 50,
+      marginLeft: 5,
+    },
   });
-
+  console.log(currentUserData);
   return (
     <View>
       <ScrollView horizontal showHorizontalScrollIndicator={false}>
         <View style={styles.storyContainer}>
           <TouchableWithoutFeedback>
             <View style={{ justifyContent: "center", alignItems: "center" }}>
-              <Image
-                source={require("../../assets/images/avatar.png")}
-                style={{ height: 75, width: 75 }}
-              />
+              {currentUserData.profile_pic ? (
+                <Image
+                  source={{ uri: currentUserData.profile_pic }}
+                  style={styles.realProfilePic}
+                />
+              ) : (
+                <Image
+                  source={require("../../assets/images/avatar.png")}
+                  style={{ height: 75, width: 75 }}
+                />
+              )}
               <Text style={{ fontSize: 13, color: primary }}>Your Story</Text>
             </View>
           </TouchableWithoutFeedback>
@@ -68,7 +86,10 @@ export default function StoriesContainer({ navigation, primary, borderColor }) {
                     style={styles.storyBackground}
                     source={require("../../assets/images/story-border.png")}
                   >
-                    <Image source={{ uri: item.image }} style={styles.story} />
+                    <Image
+                      source={{ uri: `${item.image}?t=${Date.now()}` }}
+                      style={styles.story}
+                    />
                   </ImageBackground>
                 </TouchableOpacity>
                 <Text style={styles.text}>

@@ -13,21 +13,15 @@ import {
   Ionicons,
   FontAwesome5,
 } from "@expo/vector-icons";
+import { find, get } from "lodash";
 
 import firebase from "../../config/firebase";
 import { otherIcons } from "../../utils/index";
 
 const db = firebase.firestore();
-export default function Post({ post, colors }) {
-  const {
-    likeLightActive,
-    likeLightInactive,
-    commentLight,
-    shareLight,
-    bookmarkLight,
-  } = otherIcons;
+export default function Post({ post, colors, otherProfiles }) {
   const { primary } = colors;
-
+  console.log(post);
   const styles = StyleSheet.create({
     postContainer: {
       marginBottom: 6,
@@ -88,28 +82,30 @@ export default function Post({ post, colors }) {
       color: primary,
     },
   });
-  console.log("image", post.downloadUrl);
+
   return (
     <View style={styles.postContainer}>
-      <PostHeader post={post} styles={styles} primary={primary} />
+      <PostHeader
+        post={post}
+        url={get(find(otherProfiles, { uid: post.uid }), "profile_pic")}
+        styles={styles}
+        primary={primary}
+      />
       <MediaContainer imageUrl={post.downloadUrl} styles={styles} />
       <ActionIconsContainer styles={styles} primary={primary} />
-      <LikesContainer styles={styles} />
+      <LikesContainer post={post} styles={styles} />
       <CaptionContainer post={post} styles={styles} />
     </View>
   );
 }
 
-const PostHeader = ({ post, styles, primary }) => {
-  const { user } = post;
+const PostHeader = ({ post, styles, primary, url }) => {
+  const { username } = post;
   return (
     <View style={styles.postHeaderContainer}>
       <View style={styles.postHeaderProfile}>
-        <Image
-          source={{ uri: post.profile_picture }}
-          style={styles.postHeaderDisplayPic}
-        />
-        <Text style={styles.postHeaderUsername}>{user}</Text>
+        <Image source={{ uri: url }} style={styles.postHeaderDisplayPic} />
+        <Text style={styles.postHeaderUsername}>{username}</Text>
       </View>
       <MaterialCommunityIcons name="dots-vertical" size={20} color={primary} />
     </View>
@@ -127,10 +123,10 @@ const MediaContainer = ({ imageUrl, styles }) => {
     </View>
   );
 };
-const LikesContainer = ({ styles }) => {
+const LikesContainer = ({ styles, post }) => {
   return (
     <View style={styles.actionMain}>
-      <Text style={styles.bold}>132 likes</Text>
+      <Text style={styles.bold}>{get(post, "likes.length")} likes</Text>
     </View>
   );
 };

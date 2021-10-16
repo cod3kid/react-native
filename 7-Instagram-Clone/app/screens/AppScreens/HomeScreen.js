@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, ScrollView, FlatList } from "react-native";
 import { useSelector } from "react-redux";
 
 import firebase from "../../config/firebase";
-import { posts } from "../../utils";
 import { getThemeColors } from "../../helpers";
 import Screen from "../../components/Common/Screen";
 import HomeHeader from "../../components/Home/Header";
@@ -16,6 +15,8 @@ export default function HomeScreen({ navigation }) {
   const isDark = useSelector((state) => state.themeReducer);
   const [followingPosts, setFollowingPosts] = useState([]);
   const { main, primary, borderColor, borderWhite } = getThemeColors(isDark);
+  const [otherProfiles, setOtherProfiles] = useState([]);
+  const [currentUserData, setCurrentUserData] = useState([]);
 
   const styles = StyleSheet.create({
     screen: {
@@ -46,12 +47,23 @@ export default function HomeScreen({ navigation }) {
       .doc(user.uid)
       .onSnapshot(async (doc) => {
         data = doc.data().following;
+        setCurrentUserData(doc.data());
+        await db
+          .collection("users")
+          .where("uid", "in", data)
+          .onSnapshot(async (querySnapshot) => {
+            const usersProfileData = [];
+            querySnapshot.forEach((doc) => {
+              usersProfileData.push(doc.data());
+            });
+            setOtherProfiles([...usersProfileData]);
+          });
 
         await db
           .collection("posts")
           .where("uid", "in", data)
           // .orderBy("timestamp", "desc")
-          .onSnapshot((querySnapshot) => {
+          .onSnapshot(async (querySnapshot) => {
             const data = [];
             querySnapshot.forEach((doc) => {
               data.push(doc.data());
@@ -81,6 +93,7 @@ export default function HomeScreen({ navigation }) {
           primary={primary}
           borderColor={borderColor}
           navigation={navigation}
+          currentUserData={currentUserData}
         />
         {followingPosts.length ? (
           <FlatList
@@ -89,7 +102,12 @@ export default function HomeScreen({ navigation }) {
             ItemSeparatorComponent={() => <View style={styles.separator} />}
             renderItem={({ item, index }) => {
               return (
-                <Post post={item} key={index} colors={getThemeColors(isDark)} />
+                <Post
+                  post={item}
+                  key={index}
+                  otherProfiles={otherProfiles}
+                  colors={getThemeColors(isDark)}
+                />
               );
             }}
           />

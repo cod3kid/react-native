@@ -106,34 +106,24 @@ export const settingsList = [
 ];
 export const stories = [
   {
-    user: "BelugaMeluga",
-    image:
-      "https://pbs.twimg.com/profile_images/1422644317676507136/EszIU9uI_400x400.jpg",
-    border: "#27ae60",
+    user: "ahmed.yusuf",
+    image: "https://picsum.photos/100",
   },
   {
-    user: "Beluga Jr.",
-    image:
-      "https://static.wikia.nocookie.net/youtube/images/7/73/BelugaJrPFP_400x400.jpg/revision/latest/scale-to-width-down/350?cb=20210829100256",
-    border: "#2980b9",
+    user: "sasuke_uchiha",
+    image: "https://picsum.photos/100",
   },
   {
-    user: "Hecker",
-    image:
-      "https://images.idgesg.net/images/article/2018/02/security_safety_vulnerability_vulnerabilities_risks_danger_threats_hacking_stealing_phishing_ddos_virus_spyware_malware_crime_thinkstock_485001496-100750012-large.jpg?auto=webp",
-    border: "#2c3e50",
+    user: "verylongusername",
+    image: "https://picsum.photos/100",
   },
   {
-    user: "Vim",
-    image:
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Vimlogo.svg/64px-Vimlogo.svg.png",
-    border: "#8e44ad",
+    user: "jet.li",
+    image: "https://picsum.photos/100",
   },
   {
-    user: "React Lover",
-    image:
-      "https://res.cloudinary.com/practicaldev/image/fetch/s--50wZvNu6--/c_imagga_scale,f_auto,fl_progressive,h_420,q_auto,w_1000/https://dev-to-uploads.s3.amazonaws.com/i/1wwdyw5de8avrdkgtz5n.png",
-    border: "#c0392b",
+    user: "theeagle",
+    image: "https://picsum.photos/100",
   },
 ];
 
