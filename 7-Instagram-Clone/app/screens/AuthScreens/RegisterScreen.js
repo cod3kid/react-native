@@ -16,24 +16,26 @@ import InstagramText from "../../components/Common/InstagramText";
 import Footer from "../../components/Auth/Footer";
 import AuthLoader from "../../components/Auth/AuthLoader";
 import Alert from "../../components/Common/Alert";
+import { getThemeColors } from "../../helpers";
 
 const auth = firebase.auth();
 const db = firebase.firestore();
 
 export default function LoginScreen({ navigation }) {
   const isDark = useSelector((state) => state.themeReducer);
+  const {
+    main,
+    primary,
+    blue,
+    containerColor,
+    darkBlueText,
+    dividerColor,
+    borderColor,
+  } = getThemeColors(isDark);
   const [isModalVisible, setModalVisible] = useState(false);
   const [isLoaderVisible, setLoaderVisible] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState(null);
-
-  const main = isDark ? darkColors.main : lightColors.main;
-  const primary = isDark ? darkColors.primary : lightColors.primary;
-  const blue = isDark ? darkColors.lightBlue : lightColors.mediumBlue;
-  const containerColor = isDark ? darkColors.darkGrey : lightColors.offWhite;
-  const borderColor = isDark ? darkColors.darkGrey : lightColors.lightGrey;
-  const darkBlueText = isDark ? darkColors.aceBlue : lightColors.darkBlue;
-  const dividerColor = isDark ? darkColors.secondary : lightColors.darkGrey;
 
   const styles = StyleSheet.create({
     screen: {

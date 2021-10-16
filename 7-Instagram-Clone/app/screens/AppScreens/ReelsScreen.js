@@ -50,6 +50,25 @@ export default function ReelsScreen() {
     padding6: {
       padding: 6,
     },
+    profileImageStyle: {
+      height: 50,
+      width: 50,
+      borderRadius: 25,
+    },
+    userInfo: {
+      flexDirection: "row",
+      position: "absolute",
+      alignItems: "center",
+      bottom: 40,
+      left: 0,
+      marginLeft: 10,
+    },
+    userText: {
+      marginLeft: 10,
+      color: "white",
+      fontSize: 16,
+      fontWeight: "bold",
+    },
   });
 
   return (
@@ -64,7 +83,11 @@ export default function ReelsScreen() {
             <View>
               <VideoPlayer url={item.url} styles={styles} />
               <ReelsActionBar main={main} styles={styles} />
-              <UserInfoContainer styles={styles} />
+              <UserInfoContainer
+                url={item.profile_pic}
+                username={item.username}
+                styles={styles}
+              />
             </View>
           );
         }}
@@ -88,7 +111,7 @@ const VideoPlayer = ({ url, styles }) => {
     />
   );
 };
-const ReelsHeader = ({ primary, styles }) => {
+const ReelsHeader = ({ styles }) => {
   return (
     <View style={styles.header}>
       <Text style={styles.reelsHeaderText}>Reels</Text>
@@ -99,7 +122,7 @@ const ReelsHeader = ({ primary, styles }) => {
   );
 };
 
-const ReelsActionBar = ({ styles, primary, reels }) => {
+const ReelsActionBar = ({ styles }) => {
   return (
     <View style={styles.reelActionBar}>
       <View style={styles.padding6}>
@@ -115,10 +138,11 @@ const ReelsActionBar = ({ styles, primary, reels }) => {
   );
 };
 
-const UserInfoContainer = ({ url, username }) => {
+const UserInfoContainer = ({ url, username, styles }) => {
   return (
-    <View style={{ flexDirection: "row" }}>
-      <Image uri />
+    <View style={styles.userInfo}>
+      <Image source={{ uri: url }} style={styles.profileImageStyle} />
+      <Text style={styles.userText}>{username}</Text>
     </View>
   );
 };

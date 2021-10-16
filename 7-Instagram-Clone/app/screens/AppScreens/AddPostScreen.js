@@ -25,7 +25,8 @@ export default function AddPostScreen({ route }) {
   const isDark = useSelector((state) => state.themeReducer);
   const [image, setImage] = useState(null);
   const [isUploading, setUploading] = useState(false);
-  const { main } = getThemeColors(isDark);
+  const [caption, setCaption] = useState("");
+  const { main, primary, borderColor, dividerColor } = getThemeColors(isDark);
 
   const requestPermission = async () => {
     const { granted } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -77,7 +78,7 @@ export default function AddPostScreen({ route }) {
             downloadUrl,
             comments: [],
             likes: [],
-            caption: "Blah",
+            caption: caption,
             timestamp: Date.now(),
           })
           .then(async (res) => {
@@ -105,6 +106,32 @@ export default function AddPostScreen({ route }) {
     galleryIconContainer: {
       alignItems: "center",
     },
+    headerStyle: {
+      flexDirection: "row",
+      padding: 15,
+      justifyContent: "space-between",
+    },
+    headerText: {
+      fontSize: 22,
+      color: primary,
+    },
+    imageContainer: {
+      alignSelf: "center",
+      width: "90%",
+      height: "40%",
+      overflow: "hidden",
+      borderRadius: 6,
+    },
+    imageStyle: {
+      width: "100%",
+      height: "100%",
+    },
+    padding20: {
+      padding: 20,
+    },
+    textInput: {
+      color: primary,
+    },
   });
 
   useEffect(() => {
@@ -113,38 +140,21 @@ export default function AddPostScreen({ route }) {
 
   return (
     <Screen style={styles.screen}>
-      <View
-        style={{
-          flexDirection: "row",
-          padding: 15,
-          justifyContent: "space-between",
-        }}
-      >
+      <View style={styles.headerStyle}>
         <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
-          <MaterialCommunityIcons name="close" size={32} color="black" />
+          <MaterialCommunityIcons name="close" size={32} color={primary} />
         </TouchableWithoutFeedback>
-        <Text style={{ fontSize: 22 }}>New Post</Text>
+        <Text style={styles.headerText}>New Post</Text>
 
         <TouchableWithoutFeedback onPress={() => uploadFile(image)}>
-          <MaterialCommunityIcons name="check" size={32} color="black" />
+          <MaterialCommunityIcons name="check" size={32} color={primary} />
         </TouchableWithoutFeedback>
       </View>
 
       {image ? (
-        <View
-          style={{
-            alignSelf: "center",
-            width: "90%",
-            height: "40%",
-            overflow: "hidden",
-            borderRadius: 6,
-          }}
-        >
+        <View style={styles.imageContainer}>
           <TouchableWithoutFeedback onPress={() => selectImage()}>
-            <Image
-              source={{ uri: image }}
-              style={{ width: "100%", height: "100%" }}
-            />
+            <Image source={{ uri: image }} style={styles.imageStyle} />
           </TouchableWithoutFeedback>
         </View>
       ) : (
@@ -154,10 +164,14 @@ export default function AddPostScreen({ route }) {
           </View>
         </TouchableWithoutFeedback>
       )}
-      <View style={{ padding: 20 }}>
+      <View style={styles.padding20}>
         <TextInput
+          style={styles.textInput}
+          placeholderTextColor={dividerColor}
           fontSize={16}
           numberOfLines={3}
+          value={caption}
+          onChangeText={(text) => onChangeText(text)}
           placeholder="Write a caption"
         />
       </View>
