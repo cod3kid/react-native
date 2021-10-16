@@ -1,17 +1,7 @@
 import React, { useEffect, useContext, useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  Image,
-  TouchableOpacity,
-  Dimensions,
-  ActivityIndicator,
-  ScrollView,
-} from "react-native";
+import { View, StyleSheet, ActivityIndicator, ScrollView } from "react-native";
 import { useSelector } from "react-redux";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { get } from "lodash";
 
 import Screen from "../../components/Common/Screen";
 import firebase from "../../config/firebase";
@@ -33,7 +23,8 @@ export default function ProfileScreen({ navigation }) {
   const [loading, setLoading] = useState(false);
   const { main, borderColor, primary, borderWhite } = getThemeColors(isDark);
   const { uid } = user;
-  const { username, name, bio, followers, following, posts } = userData;
+  const { username, name, bio, followers, following, posts, profile_pic } =
+    userData;
 
   const getDataFromFireStore = async () => {
     await db
@@ -93,10 +84,10 @@ export default function ProfileScreen({ navigation }) {
     <Screen style={styles.screen}>
       <ProfileHeader username={username} colors={getThemeColors(isDark)} />
       <View style={styles.profileData}>
-        <ProfileImage imageUrl={user.profile_pic} />
+        <ProfileImage imageUrl={profile_pic} />
         <ProfileBoxContainer
-          following={following}
-          followers={followers}
+          following={get(following, "length", "")}
+          followers={get(followers, "length", "")}
           posts={posts}
           colors={getThemeColors(isDark)}
         />

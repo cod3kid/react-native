@@ -1,25 +1,72 @@
-import React, { useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, ScrollView, FlatList } from "react-native";
-import { darkColors, lightColors } from "../../utils/colors";
 import { useSelector } from "react-redux";
 
+import firebase from "../../config/firebase";
 import { posts } from "../../utils";
 import { getThemeColors } from "../../helpers";
 import Screen from "../../components/Common/Screen";
 import HomeHeader from "../../components/Home/Header";
 import StoriesContainer from "../../components/Home/StoriesContainer";
 import Post from "../../components/Common/Post";
+
+const db = firebase.firestore();
 export default function HomeScreen({ navigation }) {
   const user = useSelector((state) => state.userReducer);
   const isDark = useSelector((state) => state.themeReducer);
-  const { main, primary, borderColor, dividerColor } = getThemeColors(isDark);
+  const [followingPosts, setFollowingPosts] = useState([]);
+  const { main, primary, borderColor, borderWhite } = getThemeColors(isDark);
 
   const styles = StyleSheet.create({
     screen: {
       flex: 1,
       backgroundColor: main,
     },
+    welcomeContainer: {
+      justifyContent: "center",
+      alignItems: "center",
+      paddingVertical: 170,
+      paddingHorizontal: 20,
+    },
+    welcomeHeader: {
+      fontSize: 24,
+      fontWeight: "bold",
+      color: primary,
+    },
+    welcomeSubheader: {
+      textAlign: "center",
+      color: borderWhite,
+    },
   });
+
+  const getDataFromFireStore = async () => {
+    let data = [];
+    await db
+      .collection("users")
+      .doc(user.uid)
+      .onSnapshot(async (doc) => {
+        data = doc.data().following;
+
+        await db
+          .collection("posts")
+          .where("uid", "in", data)
+          // .orderBy("timestamp", "desc")
+          .onSnapshot((querySnapshot) => {
+            const data = [];
+            querySnapshot.forEach((doc) => {
+              data.push(doc.data());
+            });
+            setFollowingPosts([...data]);
+          });
+      });
+  };
+
+  useEffect(() => {
+    getDataFromFireStore();
+    return () => {
+      getDataFromFireStore();
+    };
+  }, []);
 
   return (
     <Screen style={styles.screen}>
@@ -35,17 +82,32 @@ export default function HomeScreen({ navigation }) {
           borderColor={borderColor}
           navigation={navigation}
         />
-        <FlatList
-          data={posts}
-          keyExtractor={(item) => item.user.toString()}
-          ItemSeparatorComponent={() => <View style={styles.separator} />}
-          renderItem={({ item, index }) => {
-            return (
-              <Post post={item} key={index} colors={getThemeColors(isDark)} />
-            );
-          }}
-        />
+        {followingPosts.length ? (
+          <FlatList
+            data={followingPosts}
+            keyExtractor={(item) => item.downloadUrl.toString()}
+            ItemSeparatorComponent={() => <View style={styles.separator} />}
+            renderItem={({ item, index }) => {
+              return (
+                <Post post={item} key={index} colors={getThemeColors(isDark)} />
+              );
+            }}
+          />
+        ) : (
+          <WelcomeContent styles={styles} />
+        )}
       </ScrollView>
     </Screen>
   );
 }
+
+const WelcomeContent = ({ styles }) => {
+  return (
+    <View style={styles.welcomeContainer}>
+      <Text style={styles.welcomeHeader}>Welcome to Instagram</Text>
+      <Text style={styles.welcomeSubheader}>
+        Follow people to start seeing the photos and videos they share
+      </Text>
+    </View>
+  );
+};

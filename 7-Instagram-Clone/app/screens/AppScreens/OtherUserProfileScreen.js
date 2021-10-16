@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useSelector } from "react-redux";
+import { get } from "lodash";
 
 import firebase from "../../config/firebase";
 import Screen from "../../components/Common/Screen";
@@ -22,10 +23,11 @@ const db = firebase.firestore();
 
 export default function OtherUserProfileScreen({ route, navigation }) {
   const isDark = useSelector((state) => state.themeReducer);
+  const currentUser = useSelector((state) => state.userReducer);
   const { main, primary } = getThemeColors(isDark);
   const [profileData, setProfileData] = useState([]);
+  const [userData, setUserData] = useState({});
   const { user } = route.params;
-  console.log(user);
   const styles = StyleSheet.create({
     screen: {
       flex: 1,
@@ -45,25 +47,32 @@ export default function OtherUserProfileScreen({ route, navigation }) {
       fontWeight: "bold",
       fontSize: 20,
       marginLeft: 30,
+      color: primary,
+    },
+    dataContainer: {
+      flexDirection: "row",
+      marginBottom: 10,
     },
   });
 
   const getDataFromFireStore = async () => {
-    const data = [];
     await db
       .collection("posts")
       .where("uid", "==", user.uid)
-      .get()
-      .then((querySnapshot) => {
+      .onSnapshot((querySnapshot) => {
+        const data = [];
         querySnapshot.forEach((doc) => {
           data.push(doc.data());
         });
-      })
-      .catch((error) => {
-        console.log("Error getting documents: ", error);
+        setProfileData(data);
       });
 
-    setProfileData(data);
+    await db
+      .collection("users")
+      .doc(user.uid)
+      .onSnapshot((doc) => {
+        setUserData(doc.data());
+      });
   };
 
   useEffect(() => {
@@ -72,20 +81,27 @@ export default function OtherUserProfileScreen({ route, navigation }) {
       getDataFromFireStore();
     };
   }, []);
-
   return (
     <Screen style={styles.screen}>
       <HeaderContainer
+        primary={primary}
         styles={styles}
         username={user.username}
         onPressBack={() => navigation.goBack()}
       />
-      <View style={{ flexDirection: "row", marginBottom: 10 }}>
+      <View style={styles.dataContainer}>
         <ProfileImage imageUrl={user.profile_pic} />
-        <ProfileBoxContainer colors={getThemeColors(isDark)} />
+        <ProfileBoxContainer
+          colors={getThemeColors(isDark)}
+          posts={get(userData, "posts", 0)}
+          followers={get(userData, "followers.length", "")}
+          following={get(userData, "following.length", "")}
+        />
       </View>
       <ProfileBio
         colors={getThemeColors(isDark)}
+        currentUserId={currentUser.uid}
+        userData={userData}
         name={user.name}
         bio={user.bio}
         isOther
@@ -96,7 +112,7 @@ export default function OtherUserProfileScreen({ route, navigation }) {
   );
 }
 
-const HeaderContainer = ({ username, styles, onPressBack }) => {
+const HeaderContainer = ({ username, styles, onPressBack, primary }) => {
   return (
     <View style={styles.headerContainer}>
       <View style={styles.subHeader}>
@@ -104,14 +120,14 @@ const HeaderContainer = ({ username, styles, onPressBack }) => {
           <MaterialCommunityIcons
             name="keyboard-backspace"
             size={32}
-            color="black"
+            color={primary}
           />
         </TouchableWithoutFeedback>
 
         <Text style={styles.username}>{username}</Text>
       </View>
 
-      <MaterialCommunityIcons name="dots-vertical" size={26} color="black" />
+      <MaterialCommunityIcons name="dots-vertical" size={26} color={primary} />
     </View>
   );
 };

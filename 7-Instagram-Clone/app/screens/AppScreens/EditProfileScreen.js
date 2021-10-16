@@ -101,7 +101,7 @@ export default function EditProfileScreen({ navigation, route }) {
     }
 
     setUploading(false);
-    navigation.goBack();
+    navigation.navigate("Profile");
   };
 
   useEffect(() => {
@@ -136,6 +136,24 @@ export default function EditProfileScreen({ navigation, route }) {
       justifyContent: "center",
       marginBottom: 10,
     },
+    textInputContainer: {
+      padding: 10,
+      borderBottomColor: dividerColor,
+      borderBottomWidth: 1,
+      marginHorizontal: 20,
+    },
+    textInput: {
+      fontSize: 16,
+      color: dividerColor,
+    },
+    changeProfilePhoto: {
+      fontSize: 18,
+      color: blue,
+    },
+    subHeaderContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+    },
   });
   return (
     <Screen style={styles.screen}>
@@ -158,15 +176,15 @@ export default function EditProfileScreen({ navigation, route }) {
           placeholder="Name"
           value={nameOfUser}
           onChangeText={(text) => setName(text)}
-          bottomBorderColor={borderWhite}
           placeholderTextColor={dividerColor}
+          styles={styles}
         />
         <TextInputField
           placeholder="Bio"
           value={userBio}
           onChangeText={(text) => setUserBio(text)}
-          bottomBorderColor={borderWhite}
           placeholderTextColor={dividerColor}
+          styles={styles}
         />
       </View>
     </Screen>
@@ -177,20 +195,13 @@ const TextInputField = ({
   placeholder,
   value,
   onChangeText,
-  bottomBorderColor,
   placeholderTextColor,
+  styles,
 }) => {
   return (
-    <View
-      style={{
-        padding: 10,
-        borderBottomColor: bottomBorderColor,
-        borderBottomWidth: 1,
-        marginHorizontal: 20,
-      }}
-    >
+    <View style={styles.textInputContainer}>
       <TextInput
-        style={{ fontSize: 16, color: bottomBorderColor }}
+        style={styles.textInput}
         placeholderTextColor={placeholderTextColor}
         placeholder={placeholder}
         value={value}
@@ -203,7 +214,7 @@ const TextInputField = ({
 const EditProfileHeader = ({ styles, primary, goBack, onPressCheck }) => {
   return (
     <View style={styles.headerContainer}>
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
+      <View style={styles.subHeaderContainer}>
         <TouchableWithoutFeedback onPress={goBack}>
           <MaterialCommunityIcons
             name="keyboard-backspace"
@@ -243,7 +254,7 @@ const ProfilePicture = ({ selectedImage, imageUrl, styles, blue, onPress }) => {
           )}
         </TouchableWithoutFeedback>
       </View>
-      <Text style={{ fontSize: 18, color: blue }}>Change Profile Photo</Text>
+      <Text style={styles.changeProfilePhoto}>Change Profile Photo</Text>
     </View>
   );
 };

@@ -7,8 +7,13 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { darkColors, lightColors } from "../../utils/colors";
+import firebaseMain from "firebase";
 
+import firebase from "../../config/firebase";
+import { darkColors, lightColors } from "../../utils/colors";
+import { get } from "lodash";
+
+const db = firebase.firestore();
 export default function ProfileBio({
   name,
   bio,
@@ -17,8 +22,9 @@ export default function ProfileBio({
   isProfile,
   navigation,
   userData,
+  currentUserId,
 }) {
-  const { primary, borderColor, blue, main, borderWhite } = colors;
+  const { primary, blue, borderWhite } = colors;
   const styles = StyleSheet.create({
     padding10: {
       paddingHorizontal: 10,
@@ -80,6 +86,25 @@ export default function ProfileBio({
       padding: 5,
     },
   });
+
+  const updateCurrentUser = async () => {
+    console.log(currentUserId, userData.uid);
+    const docRef = await db.collection("users").doc(currentUserId);
+    docRef.update({
+      following: firebaseMain.firestore.FieldValue.arrayUnion(userData.uid),
+    });
+  };
+
+  const updateOtherUser = async () => {
+    const docRef = await db.collection("users").doc(userData.uid);
+    docRef.update({
+      followers: firebaseMain.firestore.FieldValue.arrayUnion(currentUserId),
+    });
+  };
+  const handleFollow = () => {
+    updateCurrentUser();
+    updateOtherUser();
+  };
   return (
     <View style={styles.padding10}>
       <Text style={styles.name}>{name}</Text>
@@ -87,9 +112,10 @@ export default function ProfileBio({
 
       {isOther && (
         <OtherProfileActions
-          onPress={() => null}
+          onPress={() => handleFollow()}
           styles={styles}
           primary={primary}
+          isFollowing={get(userData, "followers", []).includes(currentUserId)}
         />
       )}
 
@@ -104,12 +130,14 @@ export default function ProfileBio({
   );
 }
 
-const OtherProfileActions = ({ styles, primary }) => {
+const OtherProfileActions = ({ styles, primary, onPress, isFollowing }) => {
   return (
     <View style={{ flexDirection: "row" }}>
-      <TouchableWithoutFeedback>
+      <TouchableWithoutFeedback onPress={onPress}>
         <View style={styles.followContainer}>
-          <Text style={styles.followProfileText}>Follow</Text>
+          <Text style={styles.followProfileText}>
+            {`${isFollowing ? "Following" : "Follow"}`}
+          </Text>
         </View>
       </TouchableWithoutFeedback>
 

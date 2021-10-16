@@ -88,11 +88,11 @@ export default function Post({ post, colors }) {
       color: primary,
     },
   });
-
+  console.log("image", post.downloadUrl);
   return (
     <View style={styles.postContainer}>
       <PostHeader post={post} styles={styles} primary={primary} />
-      <MediaContainer imageUrl={post.imageUrl} styles={styles} />
+      <MediaContainer imageUrl={post.downloadUrl} styles={styles} />
       <ActionIconsContainer styles={styles} primary={primary} />
       <LikesContainer styles={styles} />
       <CaptionContainer post={post} styles={styles} />

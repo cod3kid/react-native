@@ -5,6 +5,7 @@ import { View, Text, StyleSheet, Image } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
+import firebaseMain from "firebase";
 import * as ImagePicker from "expo-image-picker";
 
 import firebase from "../../config/firebase";
@@ -72,6 +73,7 @@ export default function AddPostScreen({ route }) {
           .collection("posts")
           .add({
             uid: user.uid,
+            username: user.username,
             downloadUrl,
             comments: [],
             likes: [],
@@ -79,24 +81,13 @@ export default function AddPostScreen({ route }) {
             timestamp: Date.now(),
           })
           .then(async (res) => {
-            const userData = [];
-            await db
-              .collection("users")
-              .doc(user.uid)
-              .get()
-              .then(async (doc) => {
-                const docRef = await db.collection("users").doc(user.uid);
-                console.log("doco", doc.data());
-                const setWithMerge = docRef.set(
-                  {
-                    posts: doc.data().posts + 1,
-                  },
-                  { merge: true }
-                );
-              })
-              .catch((error) => {
-                console.log("Error getting documents: ", error);
-              });
+            const docRef = await db.collection("users").doc(user.uid);
+            const setWithMerge = docRef.set(
+              {
+                posts: firebaseMain.firestore.FieldValue.increment(1),
+              },
+              { merge: true }
+            );
           });
       } catch (ex) {
         console.log("Erro", ex);
