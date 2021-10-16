@@ -82,12 +82,9 @@ export default function AddPostScreen({ route }) {
           })
           .then(async (res) => {
             const docRef = await db.collection("users").doc(user.uid);
-            const setWithMerge = docRef.set(
-              {
-                posts: firebaseMain.firestore.FieldValue.increment(1),
-              },
-              { merge: true }
-            );
+            docRef.update({
+              posts: firebaseMain.firestore.FieldValue.increment(1),
+            });
           });
       } catch (ex) {
         console.log("Erro", ex);

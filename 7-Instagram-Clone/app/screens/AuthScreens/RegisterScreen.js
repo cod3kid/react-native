@@ -100,7 +100,7 @@ export default function LoginScreen({ navigation }) {
             account_type: "public",
             followers: [],
             following: [],
-            posts: [],
+            posts: 0,
             bio: "",
           })
           .then((res) => {
